@@ -6,6 +6,22 @@ Esperamos que através da análise do conteúdo discursos proferidos no Congress
 
 
 
+* Text as Data: The Promise and Pitfalls of Automatic Content
+Analysis Methods for Political Texts  - http://stanford.edu/~jgrimmer/tad2.pdf
+* http://en.wikipedia.org/wiki/Content_analysis
+
+* PESQUISA QUALITATIVA: ANÁLISE DE DISCURSO VERSUS ANÁLISE DE 
+CONTEÚDO1 http://www.scielo.br/pdf/tce/v15n4/v15n4a17
+
+* http://www.janda.org/workshop/content%20analysis/programs.htm
+
+* ReadMe: Software for Automated Content Analysis http://gking.harvard.edu/files/gking/files/readme.pdf
+
+* A Method of Automated Nonparametric Content
+Analysis for Social Science  http://gking.harvard.edu/files/gking/files/words.pdf
+
+
+
 palavras chaves
 
 *analise de conteudo, 
