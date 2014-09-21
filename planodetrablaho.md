@@ -21,7 +21,7 @@ CONTEÚDO1 http://www.scielo.br/pdf/tce/v15n4/v15n4a17
 
 * The Content Analysis Guidebook(http://academic.csuohio.edu/kneuendorf/content/resources/TOC.htm)
 
-*  Content Analysis in an Era of Big Data: A Hybrid Approach to Computational and Manual Methods  (http://www.tandfonline.com/doi/abs/10.1080/08838151.2012.761702#.VB8UqpRdXD8 )
+*  Content Analysis in an Era of Big Data: A Hybrid Approach to Computational and Manual Methods  (https://www.academia.edu/2972467/Content_Analysis_in_an_Era_of_Big_Data_A_Hybrid_Approach_to_Computational_and_Manual_Methods)
 
 
 
