@@ -23,6 +23,8 @@ CONTEÚDO1 http://www.scielo.br/pdf/tce/v15n4/v15n4a17
 
 *  Content Analysis in an Era of Big Data: A Hybrid Approach to Computational and Manual Methods  (https://www.academia.edu/2972467/Content_Analysis_in_an_Era_of_Big_Data_A_Hybrid_Approach_to_Computational_and_Manual_Methods)
 
+*http://digitalcommons.wku.edu/cgi/viewcontent.cgi?article=1187&context=theses
+
 
 
 palavras chaves
