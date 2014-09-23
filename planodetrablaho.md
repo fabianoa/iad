@@ -25,7 +25,7 @@ CONTEÚDO1 http://www.scielo.br/pdf/tce/v15n4/v15n4a17
 
 *http://digitalcommons.wku.edu/cgi/viewcontent.cgi?article=1187&context=theses
 
-
+*http://gking.harvard.edu/
 
 palavras chaves
 
