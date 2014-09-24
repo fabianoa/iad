@@ -29,6 +29,8 @@ CONTEÚDO1 http://www.scielo.br/pdf/tce/v15n4/v15n4a17
 
 *http://www.stefan-evert.de/SIGIL/sigil_R/materials/zipfR.slides.pdf
 
+*http://www.stefan-evert.de/SIGIL/sigil_R/
+
 
 palavras chaves
 
