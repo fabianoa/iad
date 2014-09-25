@@ -32,6 +32,10 @@ CONTEÚDO1 http://www.scielo.br/pdf/tce/v15n4/v15n4a17
 
 *https://www.cs.cmu.edu/~nasmith/papers/sim+acree+gross+smith.emnlp13.pdf
 
+*http://www.ufrgs.br/gianti/files/artigos/1998/1998_072_ISRC.pdf
+*http://www.asc.upenn.edu/usr/krippendorff/PUBLICATIONS.pdf
+
+
 
 palavras chaves
 
