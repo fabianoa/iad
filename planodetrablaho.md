@@ -1,8 +1,7 @@
 
-O presente estudo investigará a relação entre o congressista ou partido político  e as frentes parlamentares ,  correntes ideologicas(variável independente) e assuntos existentes por meio dos sumarios dos discussso proferidos na câmara dos deputados.
+O presente estudo investigará a relação entre um congressista da Camara dos Deputados e uma  corrente ideologica((variável independente), por meio dos sumarios dos discussso proferidos durante uma legislatura.
 
-
-Esperamos que através da análise do conteúdo discursos proferidos no Congresso nacional entre as legislaturas xx e yyy possamos identificar a qual linha ideologica o autor ou partido tem mais afinidade.
+Esperamos que através da análise do conteúdo discursos proferidos no Congresso nacional na legislatura vigente possamos identificar a qual linha ideologica ou partido um determinado congressita tem mais afinidade.
 
 
 
@@ -31,7 +30,9 @@ CONTEÚDO1 http://www.scielo.br/pdf/tce/v15n4/v15n4a17
 
 *http://www.stefan-evert.de/SIGIL/sigil_R/
 
+*https://www.cs.cmu.edu/~nasmith/papers/sim+acree+gross+smith.emnlp13.pdf
+
 
 palavras chaves
 
-*analise de conteudo, 
+*analise de conteudo,ciencias politicas,  
