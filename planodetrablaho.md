@@ -1,7 +1,11 @@
 
 O presente estudo investigará a relação entre um congressista da Camara dos Deputados e uma  corrente ideologica((variável independente), por meio dos sumarios dos discussso proferidos durante uma legislatura.
 
-Esperamos que através da análise do conteúdo discursos proferidos no Congresso nacional na legislatura vigente possamos identificar a qual linha ideologica ou partido um determinado congressita tem mais afinidade.
+O presente estudo investigará a relação entre a complexidade dos discursos proferidos pelos congressistas da Camara dos Deputados e o perfil intectual e partidário do orador. 
+
+Esperamos que através da análise do conteúdo dos discursos proferidos no Congresso nacional, durante 54ª Legislatura (2011-2015),  possamos classifica-los quanto ao grau de complexidade e verificar a  correlação com as variáveis independentes: grau de escolaridade, experiência política e partido político. 
+
+
 
 
 
@@ -18,7 +22,7 @@ CONTEÚDO1 http://www.scielo.br/pdf/tce/v15n4/v15n4a17
 
 * A Method of Automated Nonparametric Content Analysis for Social Science(http://gking.harvard.edu/files/gking/files/words.pdf)
 
-* The Content Analysis Guidebook(http://academic.csuohio.edu/kneuendorf/content/resources/TOC.htm)
+* The Content Analysis Guidebook (http://academic.csuohio.edu/kneuendorf/content/resources/TOC.htm)
 
 *  Content Analysis in an Era of Big Data: A Hybrid Approach to Computational and Manual Methods  (https://www.academia.edu/2972467/Content_Analysis_in_an_Era_of_Big_Data_A_Hybrid_Approach_to_Computational_and_Manual_Methods)
 
