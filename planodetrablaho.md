@@ -1,13 +1,19 @@
+O presente estudo investigará a relação entre o perfil intectual e partidário do congressista da Camara dos deputados e
+e o grau de riqueza léxica encontrada nos discursos proferidos pelos mesmos duarnte sua legislatura. 
 
-O presente estudo investigará a relação entre um congressista da Camara dos Deputados e uma  corrente ideologica((variável independente), por meio dos sumarios dos discussso proferidos durante uma legislatura.
-
-O presente estudo investigará a relação entre a complexidade dos discursos proferidos pelos congressistas da Camara dos Deputados e o perfil intectual e partidário do orador. 
-
-Esperamos que através da análise do conteúdo dos discursos proferidos no Congresso nacional, durante 54ª Legislatura (2011-2015),  possamos classifica-los quanto ao grau de complexidade e verificar a  correlação com as variáveis independentes: grau de escolaridade, experiência política e partido político. 
+Esperamos que,  através da análise do conteúdo dos discursos proferidos no Congresso nacional, durante 54ª Legislatura (2011-2015) , possamos medir o grau de  riqueza do vocabulário (Variavel Dependente)  e verificar a correlação com as variáveis que: grau de escolaridade, idade, e partido político. 
 
 
 
+O presente estudo investigará a relação entre assistir programas de TV exibidos na TV aberta aos domingos (Variável Independente)  e o desejo de pendurar melancias no pescoço (Variável Dependente, medida através do protocolo descrito por Fulano de Tal et al em seu trabalho intitulado Medindo o Desejo de Pendurar Melancias no Pescoço, 2014).
 
+Esperamos que os participantes selecionados aleatoriamente para participar de um grupo que assistirá 48 horas de vídeos do Domingão do Faustão em período de 5 dias apresentem uma atitude mais favorável ao ato de pendurar uma melancia no pescoço do que os participantes de um grupo que assistirem igual quantidade de horas do Domingo Legal também em um período de 5 dias.
+
+http://journals.lub.lu.se/index.php/LWPL/article/download/2273/1848
+
+http://www.ealta.eu.org/conference/2009/docs/workshop2/D2_2_AWL.pdf
+
+http://www.personal.psu.edu/~users/x/x/xxl13/papers/Lu_inpress_mlj.pdf
 
 * Text as Data: The Promise and Pitfalls of Automatic Content
 Analysis Methods for Political Texts  - http://stanford.edu/~jgrimmer/tad2.pdf
@@ -45,4 +51,4 @@ The Oxford Handbook of Political Ideologies:
 
 palavras chaves
 
-*analise de conteudo,ciencias politicas,  
+*analise de conteudo,ciencias politicas,riqueza léxica,   
