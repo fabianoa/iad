@@ -77,7 +77,8 @@ obterListaDiscursos(2013)
 
 obterDadosListaDiscursos <- function( ano ) {
 
-require(XML)    
+require(XML,quietly = TRUE)   
+require('data.table')
 
 trim <- function( x ) {
     gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
@@ -95,6 +96,7 @@ sessao_codigo<-mapply(trim,sessao_codigo)
 sessao_data <- lapply(idNodes, xpathApply, path = '../../../data', xmlValue)
 orador_nome <- lapply(idNodes, xpathApply, path = 'discurso/orador/nome', xmlValue)
 orador_partido <- lapply(idNodes, xpathApply, path = 'discurso/orador/partido', xmlValue)
+orador_partido<-mapply(trim,orador_partido)
 orador_uf <- lapply(idNodes, xpathApply, path = 'discurso/orador/uf', xmlValue)
 orador_numero <- lapply(idNodes, xpathApply, path = 'discurso/orador/numero', xmlValue)
 discurso_quarto <- lapply(idNodes, xpathApply, path = 'discurso/numeroQuarto', xmlValue)
@@ -104,16 +106,26 @@ discurso_sumario <- lapply(idNodes, xpathApply, path = 'discurso/sumario', xmlVa
 
 listadiscursos<- do.call(rbind.data.frame, mapply(cbind, sessao_codigo,sessao_data,orador_numero, orador_nome,orador_partido,orador_uf,discurso_quarto,discurso_insercao,discurso_sumario))
 
-names(listadiscursos)<-c("Codigo da Sessao","Data da Sessao","Numero do Orador","Nome do Orador", "Partido do Orador", "UF do Orador","Quarto","Insercao","Sumario")
+names(listadiscursos)<-c("Codigo da Sessao","Data da Sessao","Numero do Orador","Nome do Orador", "Partido_do_Orador", "UF do Orador","Quarto","Insercao","Sumario")
 row.names(listadiscursos)<-NULL
 
-return(listadiscursos)
+return(data.table(listadiscursos))
 
 }
 
-discursos<-obterDadosListaDiscursos(2011)
+discursos<-obterDadosListaDiscursos(2013)
+names(discursos)
 
-dataset<- discursos[1:50,1:8]
+
+t<-(discursos[discursos$'Partido_do_Orador'!=''])$Partido_do_Orador
+
+x<-do.call(rbind.data.frame,t)
+
+discursoas.data.frame(table(x))
+
+
+
+
 
 
 for (i in seq(along=discursos[,1])){
