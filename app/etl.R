@@ -1,8 +1,6 @@
 
 
 
-
-
 obterDiscursos <- function( x , ano) {
     
     ## 'directory' is a character vector of length 1 indicating
@@ -71,53 +69,15 @@ obterListaDiscursos <- function( ano ) {
 
 }
 
-obterListaDiscursos(2013)
+obterListaDiscursos(2014)
 
 
 
-obterDadosListaDiscursos <- function( ano ) {
-
-require(XML)    
-
-trim <- function( x ) {
-    gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
-}
-
-pasta.base <- "app/dados/brutos/lista_discursos/"    
-pasta.origem<-paste(pasta.base,ano,sep = "") 
 
 
-doc = xmlTreeParse(paste(pasta.origem,"/listadiscurso_",ano,".xml",sep = '') , useInternalNodes = T)
-idNodes <- getNodeSet(doc, "//discursos")
 
-sessao_codigo <- lapply(idNodes, xpathApply, path = '../../../codigo', xmlValue)
-sessao_codigo<-mapply(trim,sessao_codigo)
-sessao_data <- lapply(idNodes, xpathApply, path = '../../../data', xmlValue)
-orador_nome <- lapply(idNodes, xpathApply, path = 'discurso/orador/nome', xmlValue)
-orador_partido <- lapply(idNodes, xpathApply, path = 'discurso/orador/partido', xmlValue)
-orador_uf <- lapply(idNodes, xpathApply, path = 'discurso/orador/uf', xmlValue)
-orador_numero <- lapply(idNodes, xpathApply, path = 'discurso/orador/numero', xmlValue)
-discurso_quarto <- lapply(idNodes, xpathApply, path = 'discurso/numeroQuarto', xmlValue)
-discurso_insercao <- lapply(idNodes, xpathApply, path = 'discurso/numeroInsercao', xmlValue)
-discurso_sumario <- lapply(idNodes, xpathApply, path = 'discurso/sumario', xmlValue)
-
-
-listadiscursos<- do.call(rbind.data.frame, mapply(cbind, sessao_codigo,sessao_data,orador_numero, orador_nome,orador_partido,orador_uf,discurso_quarto,discurso_insercao,discurso_sumario))
-
-names(listadiscursos)<-c("Codigo da Sessao","Data da Sessao","Numero do Orador","Nome do Orador", "Partido do Orador", "UF do Orador","Quarto","Insercao","Sumario")
-row.names(listadiscursos)<-NULL
-
-return(listadiscursos)
-
-}
-
-discursos<-obterDadosListaDiscursos(2011)
-
-dataset<- discursos[1:50,1:8]
-
-
-for (i in seq(along=discursos[,1])){
+#for (i in seq(along=discursos[,1])){
     
-    obterdiscursos(discursos[i,])
-}
+#    obterdiscursos(discursos[i,])
+#}
 
