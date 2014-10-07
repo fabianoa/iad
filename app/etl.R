@@ -103,7 +103,6 @@ discurso_quarto <- lapply(idNodes, xpathApply, path = 'discurso/numeroQuarto', x
 discurso_insercao <- lapply(idNodes, xpathApply, path = 'discurso/numeroInsercao', xmlValue)
 discurso_sumario <- lapply(idNodes, xpathApply, path = 'discurso/sumario', xmlValue)
 
-
 listadiscursos<- do.call(rbind.data.frame, mapply(cbind, sessao_codigo,sessao_data,orador_numero, orador_nome,orador_partido,orador_uf,discurso_quarto,discurso_insercao,discurso_sumario))
 
 names(listadiscursos)<-c("Codigo da Sessao","Data da Sessao","Numero do Orador","Nome do Orador", "Partido_do_Orador", "UF do Orador","Quarto","Insercao","Sumario")
