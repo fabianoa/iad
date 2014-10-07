@@ -1,8 +1,6 @@
 
 
 
-
-
 obterDiscursos <- function( x , ano) {
     
     ## 'directory' is a character vector of length 1 indicating
@@ -71,6 +69,7 @@ obterListaDiscursos <- function( ano ) {
 
 }
 
+<<<<<<< HEAD
 obterListaDiscursos(2013)
 
 
@@ -109,9 +108,23 @@ names(listadiscursos)<-c("Codigo da Sessao","Data da Sessao","Numero do Orador",
 row.names(listadiscursos)<-NULL
 
 return(data.table(listadiscursos))
+=======
+#obterListaDiscursos(2014)
 
+>>>>>>> d3ffbc3f5977a0f38e74e822d55bcb4cba936036
+
+obterDeputados <- function( ) {
+    
+    pasta.base <- "app/dados/brutos/lista_deputados/"
+    pasta.destino<-pasta.base
+        
+    urlBase<- "http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados"
+    nome.arquivo <- paste (pasta.destino,"/listadesputados.xml",sep = '')
+    download.file(urlBase,nome.arquivo)
+    
 }
 
+<<<<<<< HEAD
 discursos<-obterDadosListaDiscursos(2013)
 names(discursos)
 
