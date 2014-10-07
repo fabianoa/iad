@@ -69,11 +69,21 @@ obterListaDiscursos <- function( ano ) {
 
 }
 
-obterListaDiscursos(2014)
+#obterListaDiscursos(2014)
 
 
+obterDeputados <- function( ) {
+    
+    pasta.base <- "app/dados/brutos/lista_deputados/"
+    pasta.destino<-pasta.base
+        
+    urlBase<- "http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados"
+    nome.arquivo <- paste (pasta.destino,"/listadesputados.xml",sep = '')
+    download.file(urlBase,nome.arquivo)
+    
+}
 
-
+obterListaDeputados()
 
 
 #for (i in seq(along=discursos[,1])){

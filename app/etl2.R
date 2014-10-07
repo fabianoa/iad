@@ -1,3 +1,51 @@
+obterDadosListaDeputados <- function() {
+ 
+    
+    require(XML)    
+    
+    trim <- function( x ) {
+        gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
+    }
+    
+    pasta.base <- "app/dados/brutos/lista_deputados/"    
+    pasta.origem<-pasta.base
+    
+    
+    doc = xmlTreeParse(paste(pasta.origem,"/listadesputados.xml",sep = '') , useInternalNodes = T)
+    idNodes <- getNodeSet(doc, "//deputados")
+    
+    ideCadastro>178387</ideCadastro>
+        <condicao>Suplente</condicao>
+        <matricula>652</matricula>
+        <idParlamentar>5829239</idParlamentar>
+        <nome>FRANCISCO DE ASSIS NUNES</nome>
+        <nomeParlamentar>FRANCISCO DE ASSIS</nomeParlamentar>
+        
+        <sexo>masculino</sexo>
+        <uf>SC</uf>
+   
+    
+    deputado_nome_parlamentar <- lapply(idNodes, xpathApply, path = 'deputado/nomeParlamentar', xmlValue)
+    deputado_url_foto <- lapply(idNodes, xpathApply, path = 'deputado/urlFoto', xmlValue)
+    deputado_nome <- lapply(idNodes, xpathApply, path = 'deputado/nome', xmlValue)
+    deputado_partido <- lapply(idNodes, xpathApply, path = 'deputado/partido', xmlValue)
+    deputado_partido<-mapply(trim,deputado_partido)
+    
+    
+    
+    listadiscursos<- do.call(rbind.data.frame, mapply(cbind,ano, sessao_codigo,sessao_data,orador_numero, orador_nome,orador_partido,orador_uf,discurso_quarto,discurso_insercao,discurso_sumario))
+    
+    names(listadiscursos)<-c("Ano","Codigo da Sessao","Data da Sessao","Numero do Orador","Nome do Orador", "Partido do Orador", "UF do Orador","Quarto","Insercao","Sumario")
+    row.names(listadiscursos)<-NULL
+    
+    return(listadiscursos)
+    
+    
+    
+    
+}    
+
+
 obterDadosListaDiscursos <- function( ano ) {
     
     require(XML)    
