@@ -184,17 +184,17 @@ coletarDados<-function(){
     listaSessoes<-obterDadosDasSessoes(2011)
     
     
-    for(i in anosLegislatura){
-        
-        listaSessoes<-obterDadosDasSessoes(i)
-        
-        for (i in seq(along=listaSessoes[,1])){
-            
-            obterdiscursos(discursos[i,])
-        }
-        
-        
-    }
+#     for(i in anosLegislatura){
+#         
+#         listaSessoes<-obterDadosDasSessoes(i)
+#         
+#         for (i in seq(along=listaSessoes[,1])){
+#             
+#             obterdiscursos(discursos[i,])
+#         }
+#         
+#         
+#     }
    
     
     
