@@ -1,4 +1,4 @@
-obterDadosListaDeputados <- function() {
+obterDadosDeputados <- function() {
  
     
     require(XML)    
@@ -11,45 +11,86 @@ obterDadosListaDeputados <- function() {
     pasta.origem<-pasta.base
     
     
-    doc = xmlTreeParse(paste(pasta.origem,"/listadesputados.xml",sep = '') , useInternalNodes = T)
+    doc = xmlTreeParse(paste(pasta.origem,"/listadeDeputados.xml",sep = '') , useInternalNodes = T)
     idNodes <- getNodeSet(doc, "//deputados")
-    
-      
+        
     deputado_Id_cadastro <- xpathApply(doc, path = '//deputados/deputado/ideCadastro', xmlValue)
+    deputado_Id_cadastro<-cbind(deputado_Id_cadastro)
+    
     deputado_nome_parlamentar <- xpathApply(doc, path = '//deputados/deputado/nomeParlamentar', xmlValue) 
+    deputado_nome_parlamentar<-cbind(deputado_nome_parlamentar)
+        
     deputado_url_foto <- xpathApply(doc, path = '//deputados/deputado/urlFoto', xmlValue) 
-
+    deputado_url_foto<-cbind(deputado_url_foto)
+        
     deputado_nome <- xpathApply(doc, path = '//deputados/deputado/nome', xmlValue)
+    deputado_nome<-cbind(deputado_nome)
+    
     deputado_partido <- xpathApply(doc, path = '//deputados/deputado/partido', xmlValue)  
     deputado_partido<-mapply(trim,deputado_partido)
-        
-    listadeputados<-cbind(deputado_Id_cadastro, deputado_nome_parlamentar,deputado_url_foto,deputado_nome, deputado_partido)
+    deputado_partido<-cbind(deputado_partido)  
     
-    names(listadeputados[,1])<-c("Id","Nome Parlamentar","Url Foto","Nome","Partido")
-    row.names(listadeputados)<-NULL
+    deputado_uf <- xpathApply(doc, path = '//deputados/deputado/uf', xmlValue)  
+    deputado_uf<-mapply(trim,deputado_uf)
+    deputado_uf<-cbind(deputado_uf)   
     
+    listadeputados<-cbind(deputado_Id_cadastro, deputado_nome_parlamentar,deputado_url_foto,deputado_nome, deputado_partido,deputado_uf)
+    
+ 
     return(listadeputados)
-
     
     
 }    
 
-obterDadosListaDeputados()
+obterDadosCandidatos<-function() {
+    
+    fileList <- list.files(path="app/dados/brutos/lista_candidatos/", pattern=".txt")
+    fileList <- paste("app/dados/brutos/lista_candidatos/",fileList,sep = '')
+    
+    
+    listaCandidatos<-''
+    
+    for (i in fileList){
+        
+        f<-read.csv(i,sep=';',header = FALSE)
+        f<-f[f$V10=='DEPUTADO FEDERAL',]
+        #f<-f[f$V42=='ELEITO' | f$V42=='SUPLENTE',]
+        
+        listaCandidatos<-rbind(listaCandidatos,as.data.frame(f))
+        
+    }
+    
+    return(listaCandidatos)
+    
+}
 
-fileList <- list.files(path="app/dados/brutos/lista_candidatos/", pattern=".txt")
-fileList <- paste("app/dados/brutos/lista_candidatos/",fileList,sep = '')
-h<-sapply(fileList, read.csv,sep=';')
-h<-as.data.frame(h)
+
+obterDadosCompletosDeputadors <- function( ano ){
+    
+    if(!require(data.table)){install.packages("data.table")}
+    
+    library("data.table")
+    
+    listaDeputados<-as.data.frame(obterDadosDeputados())
+    names(listaDeputados)
+    names(listaDeputados)[4]<-paste("Nome")
+    listaDeputados$Nome<-unlist(listaDeputados$Nome)
+    
+    listaCandidatos<-obterDadosCandidatos()
+    names(listaCandidatos)[11]<-paste("Nome")
+    
+   dt1<-data.table(listaDeputados,  key="Nome") 
+    dt2<-data.table(listaCandidatos, key="Nome")
+    
+      
+    l<-merge(x = dt1, y = dt2, by = "Nome", all.x=TRUE)
+    dim(l)
+    hea(listaDeputados)
+}
 
 
-read.csv(sep = )
 
-sapply(paste("app/dados/brutos/lista_candidatos/", 
-             1:100, sep=".txt"), 
-       read.csv)
-
-
-obterDadosListaDiscursos <- function( ano ) {
+obterDadosDasSessoes <- function( ano ) {
     
     require(XML)    
     trim <- function( x ) {
@@ -85,6 +126,26 @@ obterDadosListaDiscursos <- function( ano ) {
     return(listadiscursos)
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 setwd('c:/R/iad')
 discursos2011<-obterDadosListaDiscursos(2011)

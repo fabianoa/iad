@@ -1,20 +1,16 @@
 #Classse com métodos para obtenção dos dados 
 
 
-obterDiscursos <- function( x , ano) {
+obterDiscursos <- function( codSessao, numOrador, numQuarto, numInsercao , ano) {
     
     ## Método para obter conteudos de discursos em proferidos em determinado ano
-    ##
+    ##    
     
-    
-out <- tryCatch(
+    out <- tryCatch(
 {
     pasta.destino <- ano 
-    
-    urlBase<- paste ("http://www.camara.gov.br/SitCamaraWS/SessoesReunioes.asmx/obterInteiroTeorDiscursosPlenario?","codSessao=",x$V1,"&numOrador=",x$V3,"&numQuarto=", x$V7 ,"&numInsercao=",x$V8,sep = '')
-    
-    nome.arquivo <- paste ("dados/brutos/conteudo_discursos/",pasta.destino,"/discurso_",x$V1,"_",x$V3,"_", x$V7 ,"_",x$V8,".xml",sep = '')
-    
+    urlBase<- paste ("http://www.camara.gov.br/SitCamaraWS/SessoesReunioes.asmx/obterInteiroTeorDiscursosPlenario?","codSessao=",codSessao,"&numOrador=",numOrador,"&numQuarto=", numQuarto ,"&numInsercao=",numInsercao,sep = '')
+    nome.arquivo <- paste ("dados/brutos/conteudo_discursos/",pasta.destino,"/discurso_",codSessao,"_",numOrador,"_", numQuarto ,"_",numInsercao,".xml",sep = '')
     download.file(urlBase,nome.arquivo, quiet=TRUE)
     
     Sys.sleep(0.5)
@@ -27,13 +23,6 @@ error=function(cond) {
     # Choose a return value in case of error
     return(NA)
 },
-warning=function(cond) {
-    message(paste("URL caused a warning:", urlBase))
-    message("Here's the original warning message:")
-    message(cond)
-    # Choose a return value in case of warning
-    return(NULL)
-},
 finally={
     
 }
@@ -43,10 +32,16 @@ return(out)
 
 }
 
-obterListaDiscursos <- function( ano ) {
+#Método que coleta arquivos no formato XML com a lista das sessões realizadas na Câmara dos Deputados 
+#em uma determinado ano gravando o arquivos em uma pasta correspondente ao ano.
+obterListaSessoes <- function( ano ) {
 
- pasta.base <- "app/dados/brutos/lista_discursos/"
- pasta.destino<-paste(pasta.base,ano,sep = "") 
+ pasta.base <- paste(getwd(),"/app/dados/brutos/lista_sessoes",sep='')
+ pasta.destino<-paste(pasta.base,'/',ano,sep = "") 
+ 
+ if (!file.exists(pasta.base)){
+     dir.create(pasta.base)
+ }
  
  
  if (!file.exists(pasta.destino)){
@@ -55,45 +50,67 @@ obterListaDiscursos <- function( ano ) {
  
  
  urlBase<- paste("http://www.camara.gov.br/sitcamaraws/SessoesReunioes.asmx/ListarDiscursosPlenario?dataIni=01/01/",ano,"&dataFim=25/12/",ano,"&codigoSessao=&parteNomeParlamentar=&siglaPartido=&siglaUF=",sep='')
- nome.arquivo <- paste (pasta.destino,"/listadiscurso_",ano,".xml",sep = '')
+ nome.arquivo <- paste (pasta.destino,"/listaSessoes_",ano,".xml",sep = '')
  download.file(urlBase,nome.arquivo)
+ print(paste('Arquivo:',nome.arquivo,'carregado com sucesso'))
 
 }
 
-
-#obterListaDiscursos(2013)
-
-
+#Método que coleta arquivos no formato XML com a lista de Deputados da  Câmara dos Deputados 
+#do serviço de dados abertos da Camara de Deputados.
 obterListaDeputados <- function( ) {
     
     pasta.base <- "app/dados/brutos/lista_deputados"
     pasta.destino<-pasta.base
-        
+    
+    if (!file.exists(pasta.base)){
+        dir.create(pasta.base)
+    }
+    
+    
+    if (!file.exists(pasta.destino)){
+        dir.create(pasta.destino)
+    }
+    
     urlBase<- "http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados"
-    nome.arquivo <- paste (pasta.destino,"/listadesputados.xml",sep = '')
+    nome.arquivo <- paste (pasta.destino,"/listadeDeputados.xml",sep = '')
     download.file(urlBase,nome.arquivo)
+    print(paste('Arquivo:',nome.arquivo,'carregado com sucesso'))
+    
     
 }
 
-
+#Método que coleta arquivos no formato XML com os dados dos Deputados 
+# em uma determinada Legislatura do do serviço de dados abertos da Camara de Deputados.
+# idDeputado - Identificador do deputado
+# legislatura - numero da legislatura
 obterDeputados <- function(idDeputado, legislatura) {
     
     ## Método para obter conteudos de discursos em proferidos em determinado ano
     ##
     
+    pasta.base <- paste(getwd(),"/app/dados/brutos/dados_deputado",sep='')
+    pasta.destino<-paste(pasta.base,'/',legislatura,sep = "") 
+      
+      
+    if (!file.exists(pasta.base)){
+        dir.create(file.path(pasta.base))
+    }
     
-   ideCadastro=141428&numLegislatura=
-     
+    
+    if (!file.exists(pasta.destino)){
+        dir.create(pasta.destino)
+    }
+    
     
     out <- tryCatch(
 {
-    pasta.destino <- legislatura 
+   
     
-    urlBase<- paste (" http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDetalhesDeputado?","ideCadastro=",idDeputado,"&numLegislatura=",legislatura,sep = '')
+    url<-paste("http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDetalhesDeputado?ideCadastro=",idDeputado,"&numLegislatura=",legislatura,sep = '')
+    nome.arquivo <- paste (pasta.destino,"/deputado_",idDeputado,".xml",sep = '')
     
-    nome.arquivo <- paste ("dados/brutos/dados_deputado/",pasta.destino,"/deputado_",idDeputado,".xml",sep = '')
-    
-    download.file(urlBase,nome.arquivo, quiet=TRUE)
+    download.file(url,nome.arquivo, quiet=TRUE)
     
     Sys.sleep(0.5)
     
@@ -105,13 +122,6 @@ error=function(cond) {
     # Choose a return value in case of error
     return(NA)
 },
-warning=function(cond) {
-    message(paste("URL caused a warning:", urlBase))
-    message("Here's the original warning message:")
-    message(cond)
-    # Choose a return value in case of warning
-    return(NULL)
-},
 finally={
     
 }
@@ -121,30 +131,76 @@ return(out)
 
 }
 
+#Método que coleta arquivos no formato CSV agregado por UF 
+#com a lista de Candidatos de um determinado ano do serviço de dados abertos
+#do TRE.
 
-obterCandidatos <- function(ano) {
+obterListaCandidatos <- function(ano) {
     
     pasta.base <- "app/dados/brutos"
     pasta.destino<-pasta.base
     
+    if (!file.exists(pasta.base)){
+        dir.create(pasta.base)
+    }
+      
     urlBase<- "http://agencia.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2010.zip"
     nome.arquivo <- paste (pasta.destino,"/consulta_cand_2010.zip",sep = '')
     download.file(urlBase,nome.arquivo)
     
-    unzip(paste (pasta.destino,"/consulta_cand_2010.zip",sep = '') , exdir = paste('./',pasta.base,'/lista_candidatos',sep = ''), unzip = "internal", setTimes = FALSE)
-    
+    unzip(paste (pasta.destino,"/consulta_cand_",ano,".zip",sep = '') , exdir = paste('./',pasta.base,'/lista_candidatos',sep = ''), unzip = "internal", setTimes = FALSE)
+    file.remove(nome.arquivo)
     
 }
 
 
-obterDeputados()
 
-
-
-
-
-for (i in seq(along=discursos[,1])){
+coletarDados<-function(){
     
-    obterdiscursos(discursos[i,])
+    nuLegislatura<-54
+    anosLegislatura<-c(2011,2012,2013,2014)
+    
+    
+    print('Obtendo lista de Deputados...')
+    obterListaDeputados()
+    
+    print('Obtendo lista de Candidatos..')
+    obterListaCandidatos(2010)
+      
+    print('Obtendo lista de Sesões')
+    for(i in anosLegislatura){
+        obterListaSessoes(i)
+    }
+    
+    
+    listaDeputados<-obterDadosDeputados()
+    
+   
+    for (i in listaDeputados[,1]){
+       obterDeputados(i,nuLegislatura)
+    }
+    
+    
+    listaSessoes<-obterDadosDasSessoes(2011)
+    
+    
+    for(i in anosLegislatura){
+        
+        listaSessoes<-obterDadosDasSessoes(i)
+        
+        for (i in seq(along=listaSessoes[,1])){
+            
+            obterdiscursos(discursos[i,])
+        }
+        
+        
+    }
+   
+    
+    
+   
+    
+    
 }
+coletarDados()
 
