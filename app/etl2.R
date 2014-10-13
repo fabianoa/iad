@@ -35,7 +35,10 @@ obterDadosDeputados <- function() {
     deputado_nome <- xpathApply(doc, path = '//deputados/deputado/nome', xmlValue)
     deputado_nome<-cbind(deputado_nome)
     deputado_nome<-do.call(rbind.data.frame,deputado_nome)
+<<<<<<< HEAD
     deputado_nome[,1]<-iconv(deputado_nome[,1], to='ASCII//TRANSLIT')
+=======
+>>>>>>> 98b5112618def6cdb6f0a4ff32a3c17fad3074d6
     
     
     deputado_partido <- xpathApply(doc, path = '//deputados/deputado/partido', xmlValue)  
@@ -90,6 +93,12 @@ obterDadosCandidatos<-function() {
 
 obterDadosCompletosDeputadors <- function( ano ){
     
+    unwanted_array = list(    'Š'='S', 'š'='s', 'Ž'='Z', 'ž'='z', 'À'='A', 'Á'='A', 'Â'='A', 'Ã'='A', 'Ä'='A', 'Å'='A', 'Æ'='A', 'Ç'='C', 'È'='E', 'É'='E',
+                              'Ê'='E', 'Ë'='E', 'Ì'='I', 'Í'='I', 'Î'='I', 'Ï'='I', 'Ñ'='N', 'Ò'='O', 'Ó'='O', 'Ô'='O', 'Õ'='O', 'Ö'='O', 'Ø'='O', 'Ù'='U',
+                              'Ú'='U', 'Û'='U', 'Ü'='U', 'Ý'='Y', 'Þ'='B', 'ß'='Ss', 'à'='a', 'á'='a', 'â'='a', 'ã'='a', 'ä'='a', 'å'='a', 'æ'='a', 'ç'='c',
+                              'è'='e', 'é'='e', 'ê'='e', 'ë'='e', 'ì'='i', 'í'='i', 'î'='i', 'ï'='i', 'ð'='o', 'ñ'='n', 'ò'='o', 'ó'='o', 'ô'='o', 'õ'='o',
+                              'ö'='o', 'ø'='o', 'ù'='u', 'ú'='u', 'û'='u', 'ý'='y', 'ý'='y', 'þ'='b', 'ÿ'='y' )
+    
     if(!require(data.table)){install.packages("data.table")}
     
     library("data.table")
@@ -97,6 +106,7 @@ obterDadosCompletosDeputadors <- function( ano ){
     listaDeputados<-obterDadosDeputados()
     listaCandidatos<-obterDadosCandidatos()
     names(listaCandidatos)[1]<-"Nome"
+<<<<<<< HEAD
   
     
     dt1<-data.table(listaDeputados) 
@@ -108,8 +118,65 @@ obterDadosCompletosDeputadors <- function( ano ){
       
     listaCompletaDeputados<-merge(x = dt1, y = dt2, by = "Nome", all.x=TRUE)
   
+=======
+    names(listaCandidatos)[2]<-"Nome Parlamentar"
+    
+  
+    listaDeputados$'Nome Parlamentar'<-chartr(paste(names(unwanted_array), collapse=''),
+           paste(unwanted_array, collapse=''),
+           listaDeputados$'Nome Parlamentar')
+    
+    
+    listaDeputados$'Nome'<-chartr(paste(names(unwanted_array), collapse=''),
+                                              paste(unwanted_array, collapse=''),
+                                              listaDeputados$'Nome')
+    
+    listaCandidatos$'Nome Parlamentar'<-chartr(paste(names(unwanted_array), collapse=''),
+                                paste(unwanted_array, collapse=''),
+                                listaCandidatos$'Nome Parlamentar')
+    
+    
+    listaDeputados$'Nome'<-chartr(paste(names(unwanted_array), collapse=''),
+                                              paste(unwanted_array, collapse=''),
+                                              listaDeputados$'Nome')
+    
+     
+    dt1<-data.table(listaDeputados) 
+    setkeyv(dt1, 'Nome')
+    dt1 <- dt1[order(Nome),] 
+    
+    dt2<-data.table(listaCandidatos)
+    setkeyv(dt2, 'Nome')
+    dt2 <- dt2[order(Nome),] 
+    
+    #write.table(dt2, file = "listaCandidatos.cvs",)
+    
+    
+    listaParcialDeputados<-merge(x = dt1, y = dt2, by = "Nome", all.x=TRUE)
+    listaParcialDeputados$'Nome Parlamentar.y'<-NULL
+    names(listaParcialDeputados)[3]<-"Nome Parlamentar"
+    
+    listaDeputadosSemInformacaoDemografica<-data.table(listaParcialDeputados[is.na(listaParcialDeputados$DATA_NASCIMENTO),]$"Nome Parlamentar")
+    names(listaDeputadosSemInformacaoDemografica)[1]<-"Nome Parlamentar"
+    listaParcialDeputados<-listaParcialDeputados[!is.na(listaParcialDeputados$DATA_NASCIMENTO),]
+    setkeyv(listaParcialDeputados, names(listaParcialDeputados))
+    
+    setkeyv(listaDeputadosSemInformacaoDemografica, 'Nome Parlamentar')
+    setkeyv(dt2, 'Nome Parlamentar')
+    
+    
+    listaCompletaDeputados1<-merge(x = listaDeputadosSemInformacaoDemografica, y = dt2, by = "Nome Parlamentar", all.x=TRUE)
+    
+    
+    listaDeputadosSemInformacaoDemografica<-data.table(listaCompletaDeputados1[is.na(listaCompletaDeputados1$DATA_NASCIMENTO),]$"Nome Parlamentar")
+    
+ 
+    
+    return(listaParcialDeputados)
+    
+    
+>>>>>>> 98b5112618def6cdb6f0a4ff32a3c17fad3074d6
 }
-
 
 
 obterDadosDasSessoes <- function( ano ) {
@@ -163,42 +230,3 @@ obterDadosDasSessoes <- function( ano ) {
 
 
 
-
-
-
-
-
-
-setwd('c:/R/iad')
-discursos2011<-obterDadosListaDiscursos(2011)
-discursos2012<-obterDadosListaDiscursos(2012)
-discursos2013<-obterDadosListaDiscursos(2013)
-discursos2014<-obterDadosListaDiscursos(2014)
-
-
-listaQtAbsolutaDiscursosPorPartidos2011<-do.call(rbind.data.frame,cbind(discursos2011$'Partido do Orador'))
-listaQtAbsolutaDiscursosPorPartidos2011 <- as.data.frame(table(listaQtAbsolutaDiscursosPorPartidos2011))
-listaQtAbsolutaDiscursosPorPartidos2011<-cbind(2011,listaQtAbsolutaDiscursosPorPartidos2011)
-names(listaQtAbsolutaDiscursosPorPartidos2011)<-c("Ano","Partido","Quantidade")
-
-listaQtAbsolutaDiscursosPorPartidos2012<-do.call(rbind.data.frame,cbind(discursos2012$'Partido do Orador'))
-listaQtAbsolutaDiscursosPorPartidos2012 <- as.data.frame(table(listaQtAbsolutaDiscursosPorPartidos2012))
-listaQtAbsolutaDiscursosPorPartidos2012<-cbind(2012,listaQtAbsolutaDiscursosPorPartidos2012)
-names(listaQtAbsolutaDiscursosPorPartidos2012)<-c("Ano","Partido","Quantidade")
-
-listaQtAbsolutaDiscursosPorPartidos2013<-do.call(rbind.data.frame,cbind(discursos2013$'Partido do Orador'))
-listaQtAbsolutaDiscursosPorPartidos2013 <- as.data.frame(table(listaQtAbsolutaDiscursosPorPartidos2013))
-listaQtAbsolutaDiscursosPorPartidos2013<-cbind(2013,listaQtAbsolutaDiscursosPorPartidos2013)
-names(listaQtAbsolutaDiscursosPorPartidos2013)<-c("Ano","Partido","Quantidade")
-
-listaQtAbsolutaDiscursosPorPartidos2014<-do.call(rbind.data.frame,cbind(discursos2014$'Partido do Orador'))
-listaQtAbsolutaDiscursosPorPartidos2014 <- as.data.frame(table(listaQtAbsolutaDiscursosPorPartidos2014))
-listaQtAbsolutaDiscursosPorPartidos2014<-cbind(2014,listaQtAbsolutaDiscursosPorPartidos2014)
-names(listaQtAbsolutaDiscursosPorPartidos2014)<-c("Ano","Partido","Quantidade")
-
-listaQtAbsolutaDiscursosPorPartidos<-rbind(listaQtAbsolutaDiscursosPorPartidos2011,listaQtAbsolutaDiscursosPorPartidos2012,listaQtAbsolutaDiscursosPorPartidos2013,listaQtAbsolutaDiscursosPorPartidos2014)
-
-listaQtAbsolutaDiscursosPorPartidos<-listaQtAbsolutaDiscursosPorPartidos[ order(-listaQtAbsolutaDiscursosPorPartidos$Ano,-
-    listaQtAbsolutaDiscursosPorPartidos$Quantidade), ]
-
-saveRDS(listaQtAbsolutaDiscursosPorPartidos,file="app/dados/processados/listaQtAbsolutaDiscursosPorPartidos.Rda")
