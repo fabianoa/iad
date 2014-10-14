@@ -1,6 +1,9 @@
 library(shiny)
 library(rmarkdown)
 
+
+
+
 shinyUI(fluidPage(theme = "bootstrap3.css",
                   tags$head(includeScript("http://www.google-analytics.com/analytics.js")),
                   navbarPage("O que estamos falando?",
@@ -19,18 +22,6 @@ shinyUI(fluidPage(theme = "bootstrap3.css",
                                           mainPanel(
                                               plotOutput("phonePlot")  
                                           ))),
-                             tabPanel("Country View",
-                                      sidebarLayout(
-                                          sidebarPanel(
-                                              uiOutput("UI.Country.Analysis"),
-                                              htmlOutput("Commentary.Country.Analysis")
-                                          ),
-                                          mainPanel(
-                                              HTML("<h3>Latest developments</h3>"),
-                                              plotOutput("Charts.Country.Analysis")
-                                          )
-                                      )
-                             ),
                              navbarMenu("Análise de Dados Demográficos",           
                                         tabPanel("Composição Partidária",
                                                  h3("US Labor Market Indicators: Current Values, Relative to the Worst Point This Cycle"),

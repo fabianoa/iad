@@ -19,10 +19,10 @@ gerarQuantitativoDeputadosPorPartido()
 
 
 setwd('c:/R/iad')
-discursos2011<-obterDadosListaDiscursos(2011)
-discursos2012<-obterDadosListaDiscursos(2012)
-discursos2013<-obterDadosListaDiscursos(2013)
-discursos2014<-obterDadosListaDiscursos(2014)
+discursos2011<-obterDadosDasSessoes(2011)
+discursos2012<-obterDadosDasSessoes(2012)
+discursos2013<-obterDadosDasSessoes(2013)
+discursos2014<-obterDadosDasSessoes(2014)
 
 
 listaQtAbsolutaDiscursosPorPartidos2011<-do.call(rbind.data.frame,cbind(discursos2011$'Partido do Orador'))

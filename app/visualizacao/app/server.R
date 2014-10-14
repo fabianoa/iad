@@ -44,6 +44,8 @@ shinyServer(function(input, output, session) {
     
     result <- reactive({
           result<-dados[dados$Ano==input$ano,]
+          result$Partido1 <- ?factor(result$Partido, as.character(result$Partido))
+          result
         
     })
     
@@ -55,11 +57,11 @@ shinyServer(function(input, output, session) {
         
         ggplot(data=result(), aes(
             
-            x=Partido
+            x=Partido1
             
-            , y=Quantidade, fill=Partido)) + geom_bar(stat="identity") + 
-            theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-            coord_flip()
+            , y=Quantidade)) + geom_bar(aes(fill = factor(Quantidade)),stat="identity") + 
+             geom_text(aes(label =Quantidade  , y = Quantidade  ), size = 3,)+
+             coord_flip()+guides(fill=FALSE)
         
         
         
@@ -93,6 +95,54 @@ shinyServer(function(input, output, session) {
     })
     
     
+    # Fill in the spot we created for a plot
+    output$distribuicaoGeograficaPartidosDashboard <- renderPlot({
+        
+        # Render a barplot
+        # barplot(result2)
+        
+        
+        Geo=gvisGeoMap(Map, locationvar="Country", numvar="Percentage", options=list(height=350, dataMode='regions'))
+        
+        plot(Geo)
+        
+        
+        
+        ggplot(dadosDeputados,aes(x=factor(1),y=QT_DEPUTADOS,
+                                  fill =  SIGLA_PARTIDO  )) + geom_bar(stat="identity") + 
+            scale_fill_brewer() +
+            guides(fill=guide_legend(override.aes=list(colour=NA))) + # removes black borders from legend
+            coord_polar(theta='y') +
+            theme(axis.ticks=element_blank(),
+                  axis.text.y=element_blank(),
+                  axis.text.x=element_text(colour='black'),
+                  axis.title=element_blank(),
+                  legend.position="none") +
+            scale_y_continuous() 
+        
+        
+        coord_polar(theta = "y")
+        
+        input<- read.csv("UNdata_Export_20110304_103336968.txt", sep =';')
+        
+        select<- input[which(input$Subgroup=="Total 5-14 yr"),]
+        
+        Map<- data.frame(select$Country.or.Area, select$Value)
+        
+        names(Map)<- c("Country", "Percentage")
+        
+      
+        
+        
+        
+        
+    })
+    
+    
+    
+    
+    
+ 
     
     ListOfCodes <- c("SP 500"="^GSPC", 
                      "NASDAQ" = "^NDX",

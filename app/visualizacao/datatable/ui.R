@@ -28,7 +28,10 @@ shinyUI(
             
             # Create a spot for the barplot
             mainPanel(
-                plotOutput("phonePlot")  
+                
+                plotOutput("quantitativoDiscursos"),
+                hr()                
+               
             )
             
         )

@@ -15,29 +15,28 @@ dados <-readRDS(paste(getwd(),"/data/listaQtAbsolutaDiscursosPorPartidos.Rda",se
 shinyServer(function(input, output) {
     
     result <- reactive({
-        
-        
         result<-dados[dados$Ano==input$ano,]
-        
-      
+        result$Partido1 <- factor(result$Partido, as.character(result$Partido))
+        result
     })
     
     
     
     # Fill in the spot we created for a plot
-    output$phonePlot <- renderPlot({
+    output$quantitativoDiscursos <- renderPlot({
         
-        # Render a barplot
-       # barplot(result2)
-         
-        ggplot(data=result(), aes(
-            
-            x=Partido
-            
-           , y=Quantidade, fill=Partido)) + geom_bar(stat="identity") + 
-             theme(axis.text.x = element_text(angle = 90, hjust = 1))
         
-
+        
+        
+        ggplot(data=result(), aes(x=Partido1,y=Quantidade,fill=Partido1)) + geom_bar(aes(fill = factor(Quantidade)),colour = "black",stat="identity") +coord_flip()
+        
+        
+        
+      
         
     })
+    
+    
+    
+    
 })

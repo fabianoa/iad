@@ -1,5 +1,14 @@
-#Classse com métodos para obtenção dos dados 
 
+obterPeriodoLegislaturas<-function( nuLegislatura) {
+    
+    listaLegislaturas <- as.data.frame(rbind(c(51,'01/02/1999','31/01/2003'),c(52,'01/02/2003','31/01/2007'),c(53,'01/02/2007','31/01/2011'),c(54,'01/02/2011','31/01/2015')))
+    names(listaLegislaturas)<-c("NUMERO_LEGISLATURA", "DT_INICIO","DT_FIM")
+    
+    return 
+    
+}
+
+#Classse com métodos para obtenção dos dados 
 
 obterDiscursos <- function( codSessao, numOrador, numQuarto, numInsercao , ano) {
     
@@ -155,10 +164,10 @@ obterListaCandidatos <- function(ano) {
 
 
 
-coletarDados<-function(){
+coletarDados<-function(nuLegislatura){
     
     nuLegislatura<-54
-    anosLegislatura<-c(2011,2012,2013,2014)
+    anosLegislatura<-obterAnos(2011,2012,2013,2014)
     
     
     print('Obtendo lista de Deputados...')

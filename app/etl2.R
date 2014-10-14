@@ -35,10 +35,6 @@ obterDadosDeputados <- function() {
     deputado_nome <- xpathApply(doc, path = '//deputados/deputado/nome', xmlValue)
     deputado_nome<-cbind(deputado_nome)
     deputado_nome<-do.call(rbind.data.frame,deputado_nome)
-<<<<<<< HEAD
-    deputado_nome[,1]<-iconv(deputado_nome[,1], to='ASCII//TRANSLIT')
-=======
->>>>>>> 98b5112618def6cdb6f0a4ff32a3c17fad3074d6
     
     
     deputado_partido <- xpathApply(doc, path = '//deputados/deputado/partido', xmlValue)  
@@ -106,19 +102,7 @@ obterDadosCompletosDeputadors <- function( ano ){
     listaDeputados<-obterDadosDeputados()
     listaCandidatos<-obterDadosCandidatos()
     names(listaCandidatos)[1]<-"Nome"
-<<<<<<< HEAD
-  
-    
-    dt1<-data.table(listaDeputados) 
-    setkeyv(dt1, 'Nome')
-    
-    
-    dt2<-data.table(listaCandidatos)
-    setkeyv(dt2, 'Nome')
-      
-    listaCompletaDeputados<-merge(x = dt1, y = dt2, by = "Nome", all.x=TRUE)
-  
-=======
+
     names(listaCandidatos)[2]<-"Nome Parlamentar"
     
   
@@ -175,7 +159,7 @@ obterDadosCompletosDeputadors <- function( ano ){
     return(listaParcialDeputados)
     
     
->>>>>>> 98b5112618def6cdb6f0a4ff32a3c17fad3074d6
+
 }
 
 
@@ -186,11 +170,11 @@ obterDadosDasSessoes <- function( ano ) {
         gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
     }
     
-    pasta.base <- "app/dados/brutos/lista_discursos/"    
+    pasta.base <- "app/dados/brutos/lista_sessoes/"    
     pasta.origem<-paste(pasta.base,ano,sep = "") 
     
     
-    doc = xmlTreeParse(paste(pasta.origem,"/listadiscurso_",ano,".xml",sep = '') , useInternalNodes = T)
+    doc = xmlTreeParse(paste(pasta.origem,"/listaSessoes_",ano,".xml",sep = '') , useInternalNodes = T)
     idNodes <- getNodeSet(doc, "//discursos")
     
     sessao_codigo <- lapply(idNodes, xpathApply, path = '../../../codigo', xmlValue)
