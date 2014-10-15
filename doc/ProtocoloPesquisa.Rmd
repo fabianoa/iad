@@ -1,0 +1,60 @@
+---
+title: "Protocolo de Pesquisa"
+output: html_document
+---
+
+A presente pesquisa utilizará linguagem R e ferramenta R Studio para obtenção  e manipulação dos dados. Para camada de de visualização de 
+dados pretendemos utilizar ferramenta .
+O repositorio de documentação, fontes e alguns dados dados e seu respectivo controle de versão estaram  disponíveis em https://github.com/fabianoa/iad  
+
+
+
+Como os dados serão obtidos?
+
+Os dados serão obtidos de duas fontes principais:
+
+1. Dados abertos da Câmara dos Deputados  (http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo)
+
+     Dados sobre Deputados, Sessões e Conteúdo dos Discursos. Dados desta fonte serão obtidos por meio de chamada HTTP (GET) dentro de um formato XML.
+          
+     
+     * Serviço ListarDiscursosPlenario   - http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/listardiscursosplenario - Ex. URL
+     http://www.camara.gov.br/sitcamaraws/SessoesReunioes.asmx/ListarDiscursosPlenario?dataIni=23/11/2012&dataFim=23/11/2012&codigoSessao=&parteNomeParlamentar=&siglaPartido=&siglaUF=
+     
+     
+     * ObterInteiroTeorDiscursosPlenario   -  http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/obterinteiroteordiscursosplenario - http://www.camara.gov.br/SitCamaraWS/SessoesReunioes.asmx/obterInteiroTeorDiscursosPlenario?codSessao=022.3.54.O&numOrador=1&numQuarto=11&numInsercao=0
+     
+     * Deputados Arquivo para download http://www.camara.leg.br/internet/Deputado/DeputadosXML.zip disponível em http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/deputados/deputados
+       
+     
+     
+    
+2. 
+
+
+
+
+Qual o volume total de dados?
+Que tipo de limpeza precisará ser realizada?
+Que tipo de checagem precisará ser realizada?
+Que tipo de transformação precisará ser realizada?
+Qual o período de tempo considerado no estudo?
+
+Pretendemos trabalhar com todo o intervalo restrito de 3 legislaturas (52,53,54) que corresponde ao intervalo dos ano de  2003 e 2014. Tal restrição se dá devido 
+
+Qual é a abrangência geográfica considerada no estudo?
+
+Pretendemos trabalhar em dois ou três níveis geográficos que são Brasil, Região e Unidades da Federação
+
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -2,10 +2,10 @@
 obterPeriodoLegislaturas<-function( nuLegislatura) {
     
     
-    listaLegislaturas <- as.data.frame(rbind(c(51,'01/02/1999','31/01/2003'),c(52,'01/02/2003','31/01/2007'),c(53,'01/02/2007','31/01/2011'),c(54,'01/02/2011','31/01/2015')))
-    names(listaLegislaturas)<-c("NUMERO_LEGISLATURA", "DT_INICIO","DT_FIM")
+    listaLegislaturas <- as.data.frame(rbind(c(51,1999,2003),c(52,2003,2007),c(53,2007,2011),c(54,2011,2015)))
+    names(listaLegislaturas)<-c("NUMERO_LEGISLATURA", "ANO_INICIO","ANO_FIM")
     
-    return listaLegislaturas[listaLegislaturas$NUMERO_LEGISLATURA==nuLegislatura,]
+    return(listaLegislaturas[listaLegislaturas$NUMERO_LEGISLATURA==nuLegislatura,])
     
      
     
@@ -46,26 +46,34 @@ return(out)
 
 #Método que coleta arquivos no formato XML com a lista das sessões realizadas na Câmara dos Deputados 
 #em uma determinado ano gravando o arquivos em uma pasta correspondente ao ano.
-obterListaSessoes <- function( ano ) {
-
- pasta.base <- paste(getwd(),"/app/dados/brutos/lista_sessoes",sep='')
- pasta.destino<-paste(pasta.base,'/',ano,sep = "") 
- 
- if (!file.exists(pasta.base)){
-     dir.create(pasta.base)
- }
- 
- 
- if (!file.exists(pasta.destino)){
-    dir.create(pasta.destino)
- }
- 
- 
- urlBase<- paste("http://www.camara.gov.br/sitcamaraws/SessoesReunioes.asmx/ListarDiscursosPlenario?dataIni=01/01/",ano,"&dataFim=25/12/",ano,"&codigoSessao=&parteNomeParlamentar=&siglaPartido=&siglaUF=",sep='')
- nome.arquivo <- paste (pasta.destino,"/listaSessoes_",ano,".xml",sep = '')
- download.file(urlBase,nome.arquivo)
- print(paste('Arquivo:',nome.arquivo,'carregado com sucesso'))
-
+obterListaSessoes <- function( legislatura ) {
+    
+    legislatura<-52
+    listaAnos<- obterPeriodoLegislaturas(legislatura)   
+    listaAnos<-c((listaAnos$ANO_INICIO):(listaAnos$ANO_FIM-1))
+    
+    for(i in listaAnos){
+        print(i)
+        ano<-i
+            
+        pasta.base <- paste(getwd(),"/app/dados/brutos/lista_sessoes",sep='')
+        pasta.destino<-pasta.base 
+        
+        if (!file.exists(pasta.base)){
+            dir.create(pasta.base)
+        }
+        
+        
+        if (!file.exists(pasta.destino)){
+            dir.create(pasta.destino)
+        }
+        
+        #Excluindo período de recesso parlamentar no final do ano e inicio do ano seguinte
+        urlBase<- paste("http://www.camara.gov.br/sitcamaraws/SessoesReunioes.asmx/ListarDiscursosPlenario?dataIni=01/02/",ano,"&dataFim=23/12/",ano,"&codigoSessao=&parteNomeParlamentar=&siglaPartido=&siglaUF=",sep='')
+        nome.arquivo <- paste (pasta.destino,"/listaSessoes_",legislatura,"_",ano,".xml",sep = '')
+        download.file(urlBase,nome.arquivo)
+        print(paste('Arquivo:',nome.arquivo,'carregado com sucesso'))
+    }
 }
 
 #Método que coleta arquivos no formato XML com a lista de Deputados da  Câmara dos Deputados 
@@ -164,6 +172,8 @@ obterListaCandidatos <- function(ano) {
     file.remove(nome.arquivo)
     
 }
+obterListaCandidatos(2010)
+
 
 
 
