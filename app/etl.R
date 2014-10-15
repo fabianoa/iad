@@ -1,10 +1,13 @@
 
 obterPeriodoLegislaturas<-function( nuLegislatura) {
     
+    
     listaLegislaturas <- as.data.frame(rbind(c(51,'01/02/1999','31/01/2003'),c(52,'01/02/2003','31/01/2007'),c(53,'01/02/2007','31/01/2011'),c(54,'01/02/2011','31/01/2015')))
     names(listaLegislaturas)<-c("NUMERO_LEGISLATURA", "DT_INICIO","DT_FIM")
     
-    return 
+    return listaLegislaturas[listaLegislaturas$NUMERO_LEGISLATURA==nuLegislatura,]
+    
+     
     
 }
 

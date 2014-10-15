@@ -44,7 +44,7 @@ shinyServer(function(input, output, session) {
     
     result <- reactive({
           result<-dados[dados$Ano==input$ano,]
-          result$Partido1 <- ?factor(result$Partido, as.character(result$Partido))
+          result$Partido1 <- factor(result$Partido, as.character(result$Partido))
           result
         
     })
