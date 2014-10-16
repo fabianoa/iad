@@ -11,34 +11,70 @@ obterPeriodoLegislaturas<-function( nuLegislatura) {
     
 }
 
+
+
 #Classse com métodos para obtenção dos dados 
 
-obterDiscursos <- function( codSessao, numOrador, numQuarto, numInsercao , ano) {
+obterDiscursos <- function( codSessao, numOrador, numQuarto, numInsercao , numeroLegislatura) {
     
     ## Método para obter conteudos de discursos em proferidos em determinado ano
     ##    
     
-    out <- tryCatch(
-{
-    pasta.destino <- ano 
-    urlBase<- paste ("http://www.camara.gov.br/SitCamaraWS/SessoesReunioes.asmx/obterInteiroTeorDiscursosPlenario?","codSessao=",codSessao,"&numOrador=",numOrador,"&numQuarto=", numQuarto ,"&numInsercao=",numInsercao,sep = '')
-    nome.arquivo <- paste ("dados/brutos/conteudo_discursos/",pasta.destino,"/discurso_",codSessao,"_",numOrador,"_", numQuarto ,"_",numInsercao,".xml",sep = '')
-    download.file(urlBase,nome.arquivo, quiet=TRUE)
+    numeroLegislatura<-54
+    listaAnos<- obterPeriodoLegislaturas(numeroLegislatura)   
+    listaAnos<-c((listaAnos$ANO_INICIO):(listaAnos$ANO_FIM-1))
     
-    Sys.sleep(0.5)
+    pasta.base <- paste(getwd(),"/app/dados/brutos/conteudo_discursos",sep='')
     
-},
-error=function(cond) {
-    message(paste("URL does not seem to exist:", urlBase))
-    message("Here's the original error message:")
-    message(cond)
-    # Choose a return value in case of error
-    return(NA)
-},
-finally={
+    if (!file.exists(pasta.base)){
+        dir.create(pasta.base)
+    }
     
-}
-    )    
+    
+    for(i in listaAnos){
+        
+        
+        listaSessoes<-obterDadosDasSessoes(numeroLegislatura,i)
+        
+        pasta.destino<-paste(pasta.base,"/",numeroLegislatura,sep = '')
+        
+        if (!file.exists(pasta.destino)){
+            dir.create(pasta.destino)
+        }
+        
+        for (j in seq(along=listaSessoes[,1])){
+        
+            
+            out <- tryCatch(
+            {
+             
+              sec<-listaSessoes[j,] 
+                
+              url<- paste ("http://www.camara.gov.br/SitCamaraWS/SessoesReunioes.asmx/obterInteiroTeorDiscursosPlenario?","codSessao=",sec$'Codigo da Sessao',"&numOrador=",sec$'Numero do Orador',"&numQuarto=", sec$'Quarto' ,"&numInsercao=",sec$'Insercao',sep = '')
+              
+              nome.arquivo <- paste (pasta.destino,"/discurso_",i,"_",sec$'Codigo da Sessao',"_",sec$'Numero do Orador',"_", sec$'Quarto' ,"_",sec$'Insercao',".xml",sep = '')
+              
+              download.file(url,nome.arquivo, quiet=TRUE)
+              Sys.sleep(0.2)
+        
+            },
+            error=function(cond) {
+                message(paste("URL does not seem to exist:", url))
+                message("Here's the original error message:")
+                message(cond)
+                # Choose a return value in case of error
+                return(NA)
+            },
+            finally={
+               
+            }
+            )
+        }
+
+   }    
+    
+   
+        
 return(out)
 
 
@@ -48,12 +84,11 @@ return(out)
 #em uma determinado ano gravando o arquivos em uma pasta correspondente ao ano.
 obterListaSessoes <- function( legislatura ) {
     
-    legislatura<-52
     listaAnos<- obterPeriodoLegislaturas(legislatura)   
     listaAnos<-c((listaAnos$ANO_INICIO):(listaAnos$ANO_FIM-1))
     
     for(i in listaAnos){
-        print(i)
+     
         ano<-i
             
         pasta.base <- paste(getwd(),"/app/dados/brutos/lista_sessoes",sep='')
@@ -155,42 +190,56 @@ return(out)
 #com a lista de Candidatos de um determinado ano do serviço de dados abertos
 #do TRE.
 
-obterListaCandidatos <- function(ano) {
+obterListaCandidatos <- function(numeroLegislatura) {
     
+    legislatura<-obterPeriodoLegislaturas(numeroLegislatura)   
+    anoCandidatura <-legislatura$ANO_INICIO-1
+   
     pasta.base <- "app/dados/brutos"
-    pasta.destino<-pasta.base
-    
+  
+        
     if (!file.exists(pasta.base)){
         dir.create(pasta.base)
     }
+     
+    
+    nomeArquivo<-paste("consulta_cand_",anoCandidatura,".zip",sep='')
       
-    urlBase<- "http://agencia.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2010.zip"
-    nome.arquivo <- paste (pasta.destino,"/consulta_cand_2010.zip",sep = '')
+    urlBase<- paste("http://agencia.tse.jus.br/estatistica/sead/odsele/consulta_cand/",nomeArquivo,sep = '')
+    nome.arquivo <- paste (pasta.base,"/",nomeArquivo,sep = '')
     download.file(urlBase,nome.arquivo)
     
-    unzip(paste (pasta.destino,"/consulta_cand_",ano,".zip",sep = '') , exdir = paste('./',pasta.base,'/lista_candidatos',sep = ''), unzip = "internal", setTimes = FALSE)
+    pasta.destino<-paste(pasta.base,"/lista_candidatos/",numeroLegislatura,sep='')
+    
+    if (!file.exists(pasta.destino)){
+        dir.create(pasta.destino)
+    }
+    
+    unzip(paste (pasta.base,"/consulta_cand_",anoCandidatura,".zip",sep = '') , exdir = paste('./',pasta.destino,sep = ''), unzip = "internal", setTimes = FALSE)
     file.remove(nome.arquivo)
     
 }
-obterListaCandidatos(2010)
-
 
 
 
 coletarDados<-function(nuLegislatura){
     
-    nuLegislatura<-54
-    anosLegislatura<-obterAnos(2011,2012,2013,2014)
+    nuLegislaturas<-c(52,53,54)
+       
     
+    print('Obtendo lista de Candidatos..')
+    for(i in nuLegislaturas){
+        obterListaCandidatos(i)
+    } 
     
     print('Obtendo lista de Deputados...')
     obterListaDeputados()
     
-    print('Obtendo lista de Candidatos..')
-    obterListaCandidatos(2010)
-      
+    
+    
+    
     print('Obtendo lista de Sesões')
-    for(i in anosLegislatura){
+    for(i in nuLegislaturas){
         obterListaSessoes(i)
     }
     

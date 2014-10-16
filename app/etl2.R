@@ -163,7 +163,7 @@ obterDadosCompletosDeputadors <- function( ano ){
 }
 
 
-obterDadosDasSessoes <- function( ano ) {
+obterDadosDasSessoes <- function( legislatura, ano ) {
     
     require(XML)    
     trim <- function( x ) {
@@ -171,10 +171,10 @@ obterDadosDasSessoes <- function( ano ) {
     }
     
     pasta.base <- "app/dados/brutos/lista_sessoes/"    
-    pasta.origem<-paste(pasta.base,ano,sep = "") 
+    pasta.origem<pasta.base
     
     
-    doc = xmlTreeParse(paste(pasta.origem,"/listaSessoes_",ano,".xml",sep = '') , useInternalNodes = T)
+    doc = xmlTreeParse(paste(pasta.origem,"listaSessoes_",legislatura,"_",ano,".xml",sep = '') , useInternalNodes = T)
     idNodes <- getNodeSet(doc, "//discursos")
     
     sessao_codigo <- lapply(idNodes, xpathApply, path = '../../../codigo', xmlValue)
