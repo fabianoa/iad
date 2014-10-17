@@ -1,7 +1,7 @@
 Sobre
 ===
 
-Este repositório foi criado com objetivo de armazenara documentos e código de software refrentes ao projeto de análise e visualização de dados,  que servirá como forma de avaliação da disciplina Introdução à Análise de Dados – 2014.2 oferecida pelo Programa de Pós Graduaçao em Informática(PPGI) da Universidade Federal da Paraíba (UFPB).
+Este repositório foi criado com objetivo de armazenar documentos e código de software referentes ao projeto de análise e visualização de dados,  que servirá como instrumento  de avaliação da disciplina Introdução à Análise de Dados – 2014.2,  oferecida pelo Programa de Pós Graduaçao em Informática(PPGI) da Universidade Federal da Paraíba (UFPB).
 
 Informações detalhadas sobre a Disciplina Introdução à Análise de Dados – 2014.2, o PPGI ou UFPB podem ser obtidas em:
 
