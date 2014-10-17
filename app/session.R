@@ -1,3 +1,6 @@
+library('base64enc')    
+
+
 setwd('C:/R')
 require(XML)
 
@@ -91,13 +94,21 @@ for (i in seq(along=discursos[,1])){
 
 obterConteudoDiscurso <- function( filename ) {
   
-  doc = xmlTreeParse(filename, useInternalNodes = T)
+  require('base64enc')    
+  filename<-paste(dir,'/',files.v[3],sep = '')
+    
+  #doc = xmlTreeParse(filename, useInternalNodes = T)
+  doc <- xmlParseDoc(filename, HUGE)       
   
-  idNodes <- getNodeSet(doc, "//sessao")
   
-  discurso_conteudo <- lapply(idNodes, xpathApply, path = 'discursoRTFBase64', xmlValue)
+  discurso_conteudo <- xpathApply(doc, path = '//sessao/discursoRTFBase64', xmlValue)
+ 
+  discurso_nome_orador <- xpathApply(doc,path = '//sessao/nome', xmlValue)
+  regmatches(discurso_nome_orador, gregexpr("\\(([^()]+)\\)",discurso_nome_orador, perl=TRUE))<-''
   
-  library('base64enc')
+  discurso_partido_orador <- xpathApply(doc,path = '//sessao/partido', xmlValue)
+  discurso_dia_hora <- xpathApply(doc,path = '//sessao/horaInicioDiscurso', xmlValue)
+  
   
   t<-base64decode(paste(discurso_conteudo))
   
@@ -113,47 +124,57 @@ obterConteudoDiscurso <- function( filename ) {
   
   regmatches(str, cao) <- list(cao_hexa__to_int_multiple)
   
-  cao1<-gregexpr("({\\\\)(.+?)(})|(\\\\)(.+?)(\\b)|\\r|\\n",str, perl=TRUE)
+  cao1<-gregexpr("({\\\\)(.+?)(})|(\\\\)(.+?)(\\b)|\\r|\\n|\\(Palmas.\\)",str, perl=TRUE)
   
   regmatches(str, cao1)<-''
+    
+  dados<- cbind(discurso_dia_hora,discurso_nome_orador,discurso_partido_orador,str)
   
-  return(str)
+  return(dados)
 
 }
 
 
 
-setwd('C:/R')
+
 require(XML)
-
+getwd()
 input.ano<-''
-input.sessao<-'125.2.54.O'
+input.sessao<-'001.1.54.N'
 
-dir<-'discursos'
-file.pattern<-paste('*',input.sessao,'*.xml', sep = '')
-files.v <- dir(path=dir, pattern="*.xml")
+dir<-'app/dados/brutos/conteudo_discursos/2012'
+file.pattern<-paste('*',input.sessao, sep = '')
+file.pattern<-"*.xml"
+
+files.v <- dir(path=dir, pattern=file.pattern)
 
 conteudo.discursos<-''
 
 
-for(i in 1:length(files.v)){
+for(i in 1:1){
   
-  conteudo.discursos<-paste(conteudo.discursos,obterConteudoDiscurso(paste('discursos/',files.v[i],sep = '')))
-  
+  conteudo.discursos<-paste(conteudo.discursos,obterConteudoDiscurso(paste(dir,'/',files.v[i],sep = '')))
+  print(i)
 }
 
+conteudo.discursos<-paste(conteudo.discursos,obterConteudoDiscurso(paste(dir,'/',files.v[2],sep = '')))
+
+
+
+
+saveRDS(conteudo.discursos,file="app/dados/processados/conteudo2012.Rda")
 
 str<-conteudo.discursos
 
 
-#install.packages('tm')
+install.packages('tm')
 library(tm)
 
 myCorpus = Corpus(VectorSource(str))
-myCorpus = ?tm_map(myCorpus, content_transformer(tolower))
+myCorpus = tm_map(myCorpus, content_transformer(tolower))
 myCorpus = tm_map(myCorpus, removePunctuation)
 myCorpus = tm_map(myCorpus, removeNumbers)
-myCorpus = tm_map(myCorpus, removeWords,c("nos","essas","num","est?o","esses","pois","est?","muitas","tenho","pois","toda","eles","todo","nesse","nossos","dessa","alguns","desse","tudo","t?o","assim","quanto","menos","portanto","pronunciamento","sra","orador","onde","seja","segundo","essa","deputados","obrigado","srs","sras","mesmo","todas","obrigado","obrigada","quero","esta","aqui","foram","suas","al?m","bem","pela","at?","agora","foi","grande","n?s","minha","das","ainda","meu","nesta","contra","este","s?o","todos","aos","seus","isso","sobre","pelo","seu","nosso","muito","por","quando","mas","cada","apenas", "n?o","sim","ent?o","nossa","neste","ele","tamb?m","porque","presidente","mais","de", "para", "da", "?","com","uma","um","essa","esse","sua","como","que","dos","sem","entre","nas"))
+myCorpus = tm_map(myCorpus, removeWords,c("deputado","federal","era","dia","temos","pode","forma", "vexa","hoje","dizer","fazer","mil","anos","ter","vez","tem","desta","vai","estamos","senhoras","câmara","ser","nos","essas","num","estão","esses","pois","está","muitas","tenho","pois","toda","eles","todo","nesse","nossos","dessa","alguns","desse","tudo","tão","assim","quanto","menos","portanto","pronunciamento","sra","orador","onde","seja","segundo","essa","deputados","obrigado","srs","sras","mesmo","todas","obrigado","obrigada","quero","esta","aqui","foram","suas","além","bem","pela","até","agora","foi","grande","nós","minha","das","ainda","meu","nesta","contra","este","são","todos","aos","seus","isso","sobre","pelo","seu","nosso","muito","por","quando","mas","cada","apenas", "não","sim","então","nossa","neste","ele","também","porque","presidente","mais","de", "para", "da", "é","com","uma","um","essa","esse","sua","como","que","dos","sem","entre","nas"))
 
 
 myDTM = TermDocumentMatrix(myCorpus)
@@ -166,6 +187,6 @@ library(wordcloud)
 
 
 wordcloud(names(t), t, scale=c(2,0.5),
-                min.freq = 1, max.words=600,
+                min.freq = 1, max.words=10,
                 colors=brewer.pal(8, "Dark2"))
 

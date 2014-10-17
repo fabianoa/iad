@@ -163,7 +163,7 @@ obterDadosCompletosDeputadors <- function( ano ){
 }
 
 
-obterDadosDasSessoes <- function( ano ) {
+obterDadosDasSessoes <- function( legislatura ) {
     
     require(XML)    
     trim <- function( x ) {
