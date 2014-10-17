@@ -12,4 +12,4 @@ Informações detalhadas sobre a Disciplina Introdução à Análise de Dados �
 O repositório está organizado em duas pastas com as respectivas finalidades:
 
 * **documentos** - documentos, relátorios e gráficos do projeto.
-* **app** - scripts de coleta e manipulação de dados, aplicação de vizualização de dados e ocasionalmente algum dado, gráfico ou relátorio de pequono volume 
+* **app** - scripts de coleta e manipulação de dados, aplicação de vizualização de dados e ocasionalmente algum dado, gráfico ou relátorio de pequeno volume 
