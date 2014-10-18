@@ -13,18 +13,18 @@ Os dados serão obtidos de duas fontes principais:
 
 1. Dados abertos da Câmara dos Deputados  (http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo)
 
+ Dados desta fonte serão obtidos por meio de chamada HTTP (GET) retornando arquivo no formato XML.
+    
  
-     Dados desta fonte serão obtidos por meio de chamada HTTP (GET) retornando arquivo no formato XML.
+ Serviço  | URL 
+------------- | -------------
+ListarDiscursosPlenario | http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/listardiscursosplenario
+ObterInteiroTeorDiscursosPlenario  | http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/obterinteiroteordiscursosplenario
+Download de Arquivo |  http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/deputados/deputados
+ 
           
      
-     * Serviço ListarDiscursosPlenario   - http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/listardiscursosplenario - Ex. URL
-     http://www.camara.gov.br/sitcamaraws/SessoesReunioes.asmx/ListarDiscursosPlenario?dataIni=23/11/2012&dataFim=23/11/2012&codigoSessao=&parteNomeParlamentar=&siglaPartido=&siglaUF=
-     
-     
-     * ObterInteiroTeorDiscursosPlenario   -  http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/obterinteiroteordiscursosplenario - http://www.camara.gov.br/SitCamaraWS/SessoesReunioes.asmx/obterInteiroTeorDiscursosPlenario?codSessao=022.3.54.O&numOrador=1&numQuarto=11&numInsercao=0
-     
-     * Deputados Arquivo para download http://www.camara.leg.br/internet/Deputado/DeputadosXML.zip disponível em http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/deputados/deputados
-       
+    
      
      
     
