@@ -30,13 +30,13 @@ Download contendo todos os deputados das três últimas legislaturas: DeputadosX
 Qual o volume total de dados?
 ---------------------
 
-Serviço  | URL 
+Tipo do dado  | volume 
 ------------- | -------------
 Deputados | 780Kb
 Candidatos | 31,1MB
 Sessoes |  169MB
 Discursos | 1,75GB
-
+**Total**| 1,94GB
 
 
 Que tipo de limpeza precisará ser realizada?
