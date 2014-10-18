@@ -34,6 +34,7 @@ Qual o volume total de dados?
 
 
 Que tipo de limpeza precisará ser realizada?
+---------------------
 
 De uma forma geral , os dados brutos utlizados neste estudo possuem uma boa qualidade. Isto se deve  O fato deles Como fazem parte de uma iniciativa  
 
