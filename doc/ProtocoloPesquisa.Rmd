@@ -30,6 +30,8 @@ Download contendo todos os deputados das três últimas legislaturas: DeputadosX
 Qual o volume total de dados?
 ---------------------
 
+Segue volume dos dados brutos obtidos para a pesquisa:
+
 Tipo do dado  | volume 
 ------------- | -------------
 Deputados | 780Kb
