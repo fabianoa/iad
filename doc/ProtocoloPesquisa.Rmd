@@ -20,15 +20,13 @@ Os dados serão obtidos de duas fontes principais:
 ------------- | -------------
 ListarDiscursosPlenario | http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/listardiscursosplenario
 ObterInteiroTeorDiscursosPlenario  | http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/obterinteiroteordiscursosplenario
-Download de Arquivo |  http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/deputados/deputados
+Download contendo todos os deputados das três últimas legislaturas: DeputadosXML.zip - atualizado em 01/09/2014. |  http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/deputados/deputados
  
-          
-     
-    
-     
-     
-    
-2. 
+ 2.
+ 
+ 
+ 
+ 
 
 
 Qual o volume total de dados?
