@@ -9,11 +9,11 @@ Todo armazenamento , controle de versão da documentação, códigos fontes e al
 Como os dados serão obtidos?
 ---------------------
 
-Os dados serão obtidos de duas fontes principais:
+Todos os dados serão referentes as legislaturas 52,53,54 e serão obtidos de duas fontes principais:
 
 1. Dados abertos da Câmara dos Deputados  (http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo)
 
- Dados desta fonte serão obtidos por meio de chamada HTTP (GET) retornando arquivo no formato XML.
+ Dados desta fonte serão obtidos por meio de chamada HTTP (GET) retornando arquivo no formato XML. Os seguintes serviços foram utilizados:
     
  
  Serviço  | URL 
@@ -22,15 +22,21 @@ ListarDiscursosPlenario | http://www2.camara.leg.br/transparencia/dados-abertos/
 ObterInteiroTeorDiscursosPlenario  | http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/obterinteiroteordiscursosplenario
 Download contendo todos os deputados das três últimas legislaturas: DeputadosXML.zip - atualizado em 01/09/2014. |  http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/deputados/deputados
  
- 2.
- 
- 
- 
- 
-
+2. Repositório de Dados Eleitorais (http://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais)
+  
+  Os dados desta fonte serão obtidos por meio de chamada HTTP (GET) retornando arquivos no formato TXT, delimitado.
+   
 
 Qual o volume total de dados?
 ---------------------
+
+Serviço  | URL 
+------------- | -------------
+Deputados | 780Kb
+Candidatos | 31,1MB
+Sessoes |  169MB
+Discursos | 1,75GB
+
 
 
 Que tipo de limpeza precisará ser realizada?
