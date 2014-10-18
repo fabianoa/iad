@@ -9,7 +9,7 @@ Todo armazenamento , controle de versão da documentação, códigos fontes e al
 Como os dados serão obtidos?
 ---------------------
 
-Todos os dados serão referentes as legislaturas 52,53,54 e serão obtidos de duas fontes principais:
+Todos os dados serão referentes as legislaturas 52,53 e 54 e serão obtidos de duas fontes principais:
 
 1. Dados abertos da Câmara dos Deputados  (http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo)
 
