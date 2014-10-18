@@ -52,11 +52,17 @@ dos discuros, será necessário converter
 
 
 Que tipo de checagem precisará ser realizada?
+---------------------
+
 Que tipo de transformação precisará ser realizada?
+---------------------
+
 Qual o período de tempo considerado no estudo?
+---------------------
 
 Pretendemos trabalhar com todo o intervalo restrito de 3 legislaturas (52,53,54) que corresponde ao intervalo dos ano de  2003 e 2014. Tal restrição se dá devido 
 
 Qual é a abrangência geográfica considerada no estudo?
+---------------------
 
 Pretendemos trabalhar em dois ou três níveis geográficos que são Brasil, Região e Unidades da Federação
