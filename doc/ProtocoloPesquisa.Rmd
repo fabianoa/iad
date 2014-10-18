@@ -58,7 +58,9 @@ Que tipo de transformação precisará ser realizada?
 Qual o período de tempo considerado no estudo?
 ---------------------
 
-Pretendemos trabalhar com todo o intervalo restrito de 3 legislaturas (52,53,54) que corresponde ao intervalo dos ano de  2003 e 2014. Tal restrição se dá devido 
+Pretendemos trabalhar com o intervalo restrito de 3 legislaturas (52,53,54). Tal intervalo corresponde aoos anos de  2003 a 2014. Tal restrição se dá ao fato
+do provedor de dado só disponibilizar dados para este perído
+
 
 Qual é a abrangência geográfica considerada no estudo?
 ---------------------
