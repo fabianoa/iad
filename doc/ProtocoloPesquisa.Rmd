@@ -13,9 +13,8 @@ Os dados serão obtidos de duas fontes principais:
 
 1. Dados abertos da Câmara dos Deputados  (http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo)
 
-      
-     
-     Dados desta fonte serão obtidos por meio de chamada HTTP (GET) dentro de um formato XML.
+ 
+     Dados desta fonte serão obtidos por meio de chamada HTTP (GET) retornando arquivo no formato XML.
           
      
      * Serviço ListarDiscursosPlenario   - http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/listardiscursosplenario - Ex. URL
@@ -38,6 +37,17 @@ Qual o volume total de dados?
 
 Que tipo de limpeza precisará ser realizada?
 
+De uma forma geral , os dados brutos utlizados neste estudo possuem uma boa qualidade. Isto se deve  O fato deles Como fazem parte de uma iniciativa  
+
+
+Para os arquivos originários do serviço de Dados abertos da Câmara dos Deputados, de formato XML, será necessário fazer a separação entre o dado e o metadato(tag) presentes nos arquivos. Além disto,especificamente para os arquivos que  
+contém dados sobre os discursos, que  armazenam seu  conteúdo em Base64 e RTF(Rich Text Format),  será necessário a conversão para o formato ascii.
+
+Também, de forma mais
+
+
+para os arquivos que contem o conteúdo
+dos discuros, será necessário converter 
 
 
 
