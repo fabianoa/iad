@@ -52,7 +52,7 @@ pesquisadores, imprensa e cidadãos em geral ou que fazem parte de uma iniciativ
 
 Para os arquivos originários do serviço de Dados abertos da Câmara dos Deputados, que estão no formato XML, será necessário fazer a separação entre o dado e o metadado(marcadores). Além disto,especificamente para os arquivos que  contém dados sobre os discursos,  que  armazenam seu  conteúdo em Base64 e RTF(Rich Text Format),  será necessário a conversão para o formato ASCII.
 
-Um fato importante a respeito dos dados dos discursos é que os mesmos na verdade são uma transcrição do que foi falado em plenário. Nestas transcrições algumas informações textuais foram inseridas  para representar  situações ocorridas na sessão, tais como palmas e inserções de pequenos trechos de fala do presidente, agradecendo pelo discurso. Algumas destas  ocorrências podem ser removidas facilmente, mas  outras não poderão e serão consideradas como parte do discurso.
+Um fato importante a respeito dos dados dos discursos é que os mesmos na verdade são uma transcrição do que foi falado em plenário. Nestas transcrições algumas informações textuais foram inseridas  para representar  situações ocorridas na sessão, tais como palmas e inserções de pequenos trechos de fala do presidente agradecendo pelo discurso. Algumas destas  ocorrências podem ser removidas facilmente, mas  outras não poderão e serão consideradas como parte do discurso.
 
 Por fim, ocasionalmente durante a fase de limpeza, haverá a eliminação de espaços em brancos em strings e  de informações não relevantes ao estudo.
 
