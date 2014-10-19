@@ -57,17 +57,18 @@ Por fim, ocasionalmente durante a fase de limpeza, haverá a eliminação de esp
 Que tipo de checagem precisará ser realizada?
 ---------------------
 
-Conforme  exposto acima, os dados coletados possuem uma boa qualidade e estão  bem documentados. Durante exploração inicial e tratando as fontes de forma individual, não
-detecmaos nenhum problema que demandasse alguma verificação no dado.
+Conforme  exposto acima, os dados coletados possuem uma boa qualidade e estão  bem documentados. Durante exploração inicial e tratando de forma isolada as fontes, não
+detecmaos nenhum problema que demandasse alguma verificação mais critériosa nos dados.
 
-Porém, quando tentamos integrar os dados das duas fontes (Câmara de Deputados e Dados eleitorais) com objetico de obter os dados demográficos dos deputados, notamos  que os únicos atributos que poderiamos utilizar para relacionar uma fonte com outras seria o nome completo do deputado ou o nome político do mesmo.
+Porém, quando tentamos integrar os dados das duas fontes (Câmara de Deputados e Dados eleitorais) com objetivo de consolidar os dados demográficos dos deputados com os discursos, notamos  que os únicos atributos que poderiamos utilizar para relacionar uma fonte com outras seria o nome completo do deputado ou o nome político do mesmo.
 Isto de fato é um problemas pois em algumas situações o nomes em questão não estão iguais nas duas fontes. Logo, teremos que realizar verificação deste casos e darmos um tratamento diferenciado e em último caso uma intervenção  manual.
-
 
 Que tipo de transformação precisará ser realizada?
 ---------------------
 
-Pretendemos utilizar técnicas de Mineração de Text (Text Mining)  onde um pré processamento como tokenização, conversão para minúsculo, exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
+Pretendemos utilizar técnicas de Mineração de Text (Text Mining)  com suas fase de pré processamento tais como  tokenização, conversão para minúsculo, exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
+Toda a análise da complexidade dos discursos será realizada nesta massa transformada de dados.
+Pretendemos elaborar um projeto de experimentos 
 
 
 Nesta fase da pesquisa não visualisamos nenhuma atividade de transformação com objetivo de corrigir problema de normalização estatística dos dados.
@@ -77,8 +78,8 @@ Nesta fase da pesquisa não visualisamos nenhuma atividade de transformação co
 Qual o período de tempo considerado no estudo?
 ---------------------
 
-Pretendemos trabalhar com o intervalo restrito de 3 legislaturas (52,53,54). Tal intervalo corresponde aoos anos de  2003 a 2014. Tal restrição se dá ao fato
-de que a fonte de dados da Câmara dos Deputados só disponibiliza dados para este perído.
+Pretendemos trabalhar com o intervalo restrito de 3 legislaturas (52,53,54). Tal intervalo corresponde aos anos de  2003 a 2014. Tal restrição se dá ao fato
+de que a fonte de dados da Câmara dos Deputados só disponibiliza dados para este período.
 
 Qual é a abrangência geográfica considerada no estudo?
 ---------------------
