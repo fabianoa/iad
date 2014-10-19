@@ -24,9 +24,8 @@ Download contendo todos os deputados das três últimas legislaturas: DeputadosX
  
 2. Repositório de Dados Eleitorais (http://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais).
   
-  Os dados desta fonte serão obtidos por meio de chamada HTTP (GET) retornando arquivos comapactados no formato TXT, delimitado referentes aos anos onde houveram eleições referentas a lesgislaturas acima citada.
+  Os dados desta fonte serão obtidos por meio de chamada HTTP (GET) retornando arquivos comapactados no formato TXT e delimitados O dados coletados são  referentes aos anos onde houveram eleições para  as lesgislaturas acima citadas.
   
-  .
    
 
 Qual o volume total de dados?
