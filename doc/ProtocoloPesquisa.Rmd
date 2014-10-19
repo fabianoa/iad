@@ -52,7 +52,7 @@ contém dados sobre os discursos e que  armazenam seu  conteúdo em Base64 e RTF
 Ainda com os dados dos discursos, teremos que em algum momento do estudo realizar limpezas necessárias e previstas em um  processo de mineração de texto (Text Mining) as saber
 exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
 
-Também, durante a fase de limpeza, ocasionalmente será eliminando espaços em brancos das strings e eliminação de informações não relevantes.
+Ocasionalmente,durante a fase de limpeza, haverá aliminação de espaços em brancos em strings e eliminação de informações não relevantes ao estudo tais como .
 
 Que tipo de checagem precisará ser realizada?
 ---------------------
