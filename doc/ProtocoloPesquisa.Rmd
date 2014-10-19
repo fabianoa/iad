@@ -68,7 +68,7 @@ Isto de fato é um problema, pois em algumas situações os nomes em questão n�
 Que tipo de transformação precisará ser realizada?
 ---------------------
 
-Pretendemos utilizar técnicas de Mineração de Text (Text Mining)  com suas fase de pré processamento: tokenização, conversão para minúsculo, exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
+Pretendemos utilizar técnicas de Mineração de Texto (Text Mining)  com suas fase de pré processamento: tokenização, conversão para minúsculo, exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
 Toda a análise da complexidade dos discursos será realizada nesta massa transformada de dados.
 
 Pretendemos conduzir um projeto de experimentos do tipo  fatorial tendo em vista o estudo da influência de fatores demográficos 
