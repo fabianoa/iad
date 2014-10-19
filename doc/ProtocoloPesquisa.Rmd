@@ -32,7 +32,7 @@ Qual o volume total de dados?
 
 Segue volume dos dados brutos obtidos para a pesquisa:
 
-Tipo do dado  | volume 
+Tipo do dado  | Volume 
 ------------- | -------------
 Deputados | 780Kb
 Candidatos | 31,1MB
