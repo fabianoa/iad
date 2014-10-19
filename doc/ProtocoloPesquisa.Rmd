@@ -57,12 +57,11 @@ Por fim, ocasionalmente durante a fase de limpeza, haverá a eliminação de esp
 Que tipo de checagem precisará ser realizada?
 ---------------------
 
-Conforme  exposto acima, os dados coletados possuem uma boa qualidade, sendo bem documentados. Durante exploração inicial, não
-detecmaos nenhum problema que demandasse alguma verificação, tratando as fontes de forma individual.
+Conforme  exposto acima, os dados coletados possuem uma boa qualidade, sendo bem documentados. Durante exploração inicial e tratando as fontes de forma individual, não
+detecmaos nenhum problema que demandasse alguma verificação no dado.
 
 Porém, quando tentamos integrar os dados das duas fontes (Câmara de Deputados e Dados eleitorais) com objetico de obter os dados demográficos dos deputados, notamos  que os únicos atributos que poderiamos utilizar para relacionar uma fonte com outras seria o nome completo  do deputado ou o nome político dos mesmos.
-
-integrar  um ponto de atenção deve ser verificado 
+Isto de fato é um problemas pois em algumas situações o nomes em questão não estão iguais nas duas fontes. Logo, 
 
 
 
@@ -73,6 +72,7 @@ Que tipo de transformação precisará ser realizada?
 Ainda com os dados dos discursos, teremos que em algum momento do estudo realizar limpezas necessárias e previstas em um  processo de mineração de texto (Text Mining) as saber
 exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
 
+Nesta fase da pesquisa não visualisamos nenhuma atividade de transformação com objetivo de corrigir problema de normalização estatística dos dados.
 
 
 
