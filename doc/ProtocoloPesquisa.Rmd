@@ -67,9 +67,8 @@ Isto de fato é um problemas pois em algumas situações o nomes em questão nã
 Que tipo de transformação precisará ser realizada?
 ---------------------
 
+Pretendemos utilizar técnicas de Mineração de Text (Text Mining)  onde um pré processamento como tokenização, conversão para minúsculo, exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
 
-Ainda com os dados dos discursos, teremos que em algum momento do estudo realizar limpezas necessárias e previstas em um  processo de mineração de texto (Text Mining) as saber
-exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
 
 Nesta fase da pesquisa não visualisamos nenhuma atividade de transformação com objetivo de corrigir problema de normalização estatística dos dados.
 
