@@ -48,18 +48,21 @@ Que tipo de limpeza precisará ser realizada?
 De uma forma geral , os dados brutos utlizados neste estudo possuem uma boa qualidade, tendo em vista que  são disponibilizados por orgão oficiais do governo, em serviços voltados para 
 pesquisadores, imprensa e cidadãos em geral ou que fazem fazem parte de uma iniciativa chamada "Dados Abertos".
 
-Para os arquivos originários do serviço de Dados abertos da Câmara dos Deputados, que estão no formato XML, será necessário fazer a separação entre o dado e o metadato(tag) presentes nos arquivos. Além disto,especificamente para os arquivos que  
-contém dados sobre os discursos e que  armazenam seu  conteúdo em Base64 e RTF(Rich Text Format),  será necessário a conversão para o formato ascii.
+Para os arquivos originários do serviço de Dados abertos da Câmara dos Deputados, que estão no formato XML, será necessário fazer a separação entre o dado e o metadato(tag) presentes nos arquivos. Além disto,especificamente para os arquivos que  contém dados sobre os discursos e que  armazenam seu  conteúdo em Base64 e RTF(Rich Text Format),  será necessário a conversão para o formato ascii.
 
-Ocasionalmente,durante a fase de limpeza, haverá aliminação de espaços em brancos em strings e eliminação de informações não relevantes ao estudo tais como .
+Um fato importante a respeito dos dados dos discursos é que os mesmos na verdade são uma transcrição do que foi falado em plenário. Nesta transcrição algumas infomações textuais foram inseridas pelo trasncritos e que represntam situações ocorridas nas seções. Por exepmplo, em alguns discursos possuem referências a palmas da segunite maneira:  (.Palmas). Em outros existema inserções de pequenos trecho de falas do presidente da sessão, agradecendo pelo discurso. Tais 
+
+Por fim, ocasionalmente durante a fase de limpeza, haverá a eliminação de espaços em brancos em strings e  de informações não relevantes ao estudo.
 
 Que tipo de checagem precisará ser realizada?
 ---------------------
 
-Conforme  exposto acima, os dados coletados possuem uma boa qualidade, sendo bem documentado e durante exploração inicial, não
-detecmaos nenhum problema que demandasse alguma verificação.
+Conforme  exposto acima, os dados coletados possuem uma boa qualidade, sendo bem documentados. Durante exploração inicial, não
+detecmaos nenhum problema que demandasse alguma verificação, tratando as fontes de forma individual.
 
-Porém um ponto de atenção deve ser verificado 
+Porém, quando tentamos integrar os dados das duas fontes (Câmara de Deputados e Dados eleitorais) com objetico de obter os dados demográficos dos deputados, notamos  que os únicos atributos que poderiamos utilizar para relacionar uma fonte com outras seria o nome completo  do deputado ou o nome político dos mesmos.
+
+integrar  um ponto de atenção deve ser verificado 
 
 
 
