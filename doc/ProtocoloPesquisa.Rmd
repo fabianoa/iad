@@ -3,8 +3,10 @@ Protocolo de Pesquisa
 
 O presente estudo utilizará linguagem R e ferramenta R Studio para obtenção  e manipulação dos dados. Para a  visualização de 
 dados pretendemos utilizar ferramenta Shiny que suporta o pacotes gráfico de R.
-Todo armazenamento e controle de versão da documentação, códigos fontes e alguns dados  estão  disponíveis em https://github.com/fabianoa/iad  
 
+Todo armazenamento e controle de versão da documentação, códigos fontes e alguns dados  estão  disponíveis em https://github.com/fabianoa/iad
+
+A aplicação de visualização de dados ficará em https://fabianoa.shinyapps.io/app-iad/
 
 Como os dados serão obtidos?
 ---------------------
