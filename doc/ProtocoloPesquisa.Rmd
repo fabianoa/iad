@@ -1,8 +1,8 @@
 Protocolo de Pesquisa
 ====================
 
-O presente estudo utilizará linguagem R e ferramenta R Studio para obtenção  e manipulação dos dados. Para camada de de visualização de 
-dados pretendemos utilizar ferramenta Shiny.
+O presente estudo utilizará linguagem R e ferramenta R Studio para obtenção  e manipulação dos dados. Para a  visualização de 
+dados pretendemos utilizar ferramenta Shiny que suporta o pacotes gráfico de R.
 Todo armazenamento , controle de versão da documentação, códigos fontes e alguns dados  estão  disponíveis em https://github.com/fabianoa/iad  
 
 
