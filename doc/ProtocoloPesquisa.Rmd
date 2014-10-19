@@ -1,4 +1,4 @@
-Protocolo de Pesquisa
+Protocolo de Pesquisa (Fabiano Alencar)
 ====================
 
 O presente estudo utilizará linguagem R e ferramenta R Studio para obtenção  e manipulação dos dados. Para a  visualização de 
