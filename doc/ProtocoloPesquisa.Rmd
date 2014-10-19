@@ -57,12 +57,11 @@ Por fim, ocasionalmente durante a fase de limpeza, haverá a eliminação de esp
 Que tipo de checagem precisará ser realizada?
 ---------------------
 
-Conforme  exposto acima, os dados coletados possuem uma boa qualidade, sendo bem documentados. Durante exploração inicial e tratando as fontes de forma individual, não
+Conforme  exposto acima, os dados coletados possuem uma boa qualidade e estão  bem documentados. Durante exploração inicial e tratando as fontes de forma individual, não
 detecmaos nenhum problema que demandasse alguma verificação no dado.
 
-Porém, quando tentamos integrar os dados das duas fontes (Câmara de Deputados e Dados eleitorais) com objetico de obter os dados demográficos dos deputados, notamos  que os únicos atributos que poderiamos utilizar para relacionar uma fonte com outras seria o nome completo  do deputado ou o nome político dos mesmos.
-Isto de fato é um problemas pois em algumas situações o nomes em questão não estão iguais nas duas fontes. Logo, 
-
+Porém, quando tentamos integrar os dados das duas fontes (Câmara de Deputados e Dados eleitorais) com objetico de obter os dados demográficos dos deputados, notamos  que os únicos atributos que poderiamos utilizar para relacionar uma fonte com outras seria o nome completo do deputado ou o nome político do mesmo.
+Isto de fato é um problemas pois em algumas situações o nomes em questão não estão iguais nas duas fontes. Logo, teremos que realizar verificação deste casos e darmos um tratamento diferenciado e em último caso uma intervenção  manual.
 
 
 Que tipo de transformação precisará ser realizada?
