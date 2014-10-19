@@ -50,7 +50,7 @@ pesquisadores, imprensa e cidadãos em geral ou que fazem fazem parte de uma ini
 
 Para os arquivos originários do serviço de Dados abertos da Câmara dos Deputados, que estão no formato XML, será necessário fazer a separação entre o dado e o metadato(marcadores). Além disto,especificamente para os arquivos que  contém dados sobre os discursos e que  armazenam seu  conteúdo em Base64 e RTF(Rich Text Format),  será necessário a conversão para o formato ASCII.
 
-Um fato importante a respeito dos dados dos discursos é que os mesmos na verdade são uma transcrição do que foi falado em plenário. Nesta transcrição algumas infomações textuais foram inseridas  e que represntam situações ocorridas na sessão. Por exepmplo, em alguns discursos existem  referências a palmas como (.Palmas). Em outros existema inserções de pequenos trecho de fala do presidente da sessão, agradecendo pelo discurso. Algumas destas  ocorrências podem ser removidas facilmente, mas  outras não poderão e serão consideradas como parte do discurso.
+Um fato importante a respeito dos dados dos discursos é que os mesmos na verdade são uma transcrição do que foi falado em plenário. Nesta transcrição algumas infomações textuais foram inseridas  que representam situações ocorridas na sessão. Por exemplo, em alguns discursos existem  referências a palmas como (.Palmas). Em outros existema inserções de pequenos trecho de fala do presidente da sessão, agradecendo pelo discurso. Algumas destas  ocorrências podem ser removidas facilmente, mas  outras não poderão e serão consideradas como parte do discurso.
 
 Por fim, ocasionalmente durante a fase de limpeza, haverá a eliminação de espaços em brancos em strings e  de informações não relevantes ao estudo.
 
@@ -61,18 +61,18 @@ Conforme  exposto acima, os dados coletados possuem uma boa qualidade e estão  
 detecmaos nenhum problema que demandasse alguma verificação mais critériosa nos dados.
 
 Porém, quando tentamos integrar os dados das duas fontes (Câmara de Deputados e Dados eleitorais) com objetivo de consolidar os dados demográficos dos deputados com os discursos, notamos  que os únicos atributos que poderiamos utilizar para relacionar uma fonte com outras seria o nome completo do deputado ou o nome político do mesmo.
-Isto de fato é um problemas pois em algumas situações o nomes em questão não estão iguais nas duas fontes. Logo, teremos que realizar verificação deste casos e darmos um tratamento diferenciado e em último caso uma intervenção  manual.
+Isto de fato é um problemas pois em algumas situações o nomes em questão não estão iguais nas duas fontes. Logo, teremos que realizar verificação deste casos, executando um tratamento diferenciado que em último consiste em  uma intervenção  manual.
 
 Que tipo de transformação precisará ser realizada?
 ---------------------
 
-Pretendemos utilizar técnicas de Mineração de Text (Text Mining)  com suas fase de pré processamento tais como  tokenização, conversão para minúsculo, exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
+Pretendemos utilizar técnicas de Mineração de Text (Text Mining)  com suas fase de pré processamento: tokenização, conversão para minúsculo, exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
 Toda a análise da complexidade dos discursos será realizada nesta massa transformada de dados.
-Pretendemos elaborar um projeto de experimentos 
 
+Pretendemos conduzir um projeto de experimentos do tipo  fatorial tendo em vista o estudo da influência de fatores demográficos 
+na complexidade dos discursos proferidos, principal objetivo de nosso estudo.
 
-Nesta fase da pesquisa não visualisamos nenhuma atividade de transformação com objetivo de corrigir problema de normalização estatística dos dados.
-
+Nesta fase da pesquisa não visualisamos nenhuma atividade de transformação com objetivo de corrigir problema de obliquidade e sobreposição. Mas tal correção não está descartada.
 
 
 Qual o período de tempo considerado no estudo?
