@@ -48,22 +48,26 @@ De uma forma geral , os dados brutos utlizados neste estudo possuem uma boa qual
 pesquisadores, imprensa e cidadãos em geral ou que fazem fazem parte de uma iniciativa chamada "Dados Abertos".
 
 Para os arquivos originários do serviço de Dados abertos da Câmara dos Deputados, que estão no formato XML, será necessário fazer a separação entre o dado e o metadato(tag) presentes nos arquivos. Além disto,especificamente para os arquivos que  
-contém dados sobre os discursos, que  armazenam seu  conteúdo em Base64 e RTF(Rich Text Format),  será necessário a conversão para o formato ascii.
-Ainda com os dados dos discursos, será necessário em algum momento do estudo realizar limpeza necessárias e previstas no processo de mineração de texto (Text Mining) as aber
+contém dados sobre os discursos e que  armazenam seu  conteúdo em Base64 e RTF(Rich Text Format),  será necessário a conversão para o formato ascii.
+Ainda com os dados dos discursos, teremos que em algum momento do estudo realizar limpezas necessárias e previstas em um  processo de mineração de texto (Text Mining) as saber
 exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
 
-
-Também, durante a fase de limpeza, ocasionalmente será eliminando espaços em brancos das strings, exclusão de "palavras de parada" 
+Também, durante a fase de limpeza, ocasionalmente será eliminando espaços em brancos das strings e eliminação de informações não relevantes.
 
 Que tipo de checagem precisará ser realizada?
 ---------------------
 
-
+Pelos motivos expostos acima, 
 
 
 
 Que tipo de transformação precisará ser realizada?
 ---------------------
+
+
+
+
+
 
 Qual o período de tempo considerado no estudo?
 ---------------------
