@@ -1,60 +1,91 @@
----
-title: "Protocolo de Pesquisa"
-output: html_document
----
+Protocolo de Pesquisa (Fabiano Alencar)
+====================
 
-A presente pesquisa utilizará linguagem R e ferramenta R Studio para obtenção  e manipulação dos dados. Para camada de de visualização de 
-dados pretendemos utilizar ferramenta .
-O repositorio de documentação, fontes e alguns dados dados e seu respectivo controle de versão estaram  disponíveis em https://github.com/fabianoa/iad  
+O presente estudo utilizará linguagem R e ferramenta R Studio para obtenção  e manipulação dos dados. Para a  visualização de 
+dados pretendemos utilizar ferramenta Shiny que suporta o pacotes gráfico de R.
 
+Todo armazenamento e controle de versão da documentação, códigos fontes e alguns dados  estão  disponíveis em  https://github.com/fabianoa/iad
 
+A aplicação de visualização de dados ficará em https://fabianoa.shinyapps.io/app-iad/
 
 Como os dados serão obtidos?
+---------------------
 
-Os dados serão obtidos de duas fontes principais:
+Todos os dados serão referentes as legislaturas 52,53 e 54 e serão obtidos de duas fontes principais:
 
-1. Dados abertos da Câmara dos Deputados  (http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo)
+1. Dados abertos da Câmara dos Deputados  (http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo).
 
-     Dados sobre Deputados, Sessões e Conteúdo dos Discursos. Dados desta fonte serão obtidos por meio de chamada HTTP (GET) dentro de um formato XML.
-          
-     
-     * Serviço ListarDiscursosPlenario   - http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/listardiscursosplenario - Ex. URL
-     http://www.camara.gov.br/sitcamaraws/SessoesReunioes.asmx/ListarDiscursosPlenario?dataIni=23/11/2012&dataFim=23/11/2012&codigoSessao=&parteNomeParlamentar=&siglaPartido=&siglaUF=
-     
-     
-     * ObterInteiroTeorDiscursosPlenario   -  http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/obterinteiroteordiscursosplenario - http://www.camara.gov.br/SitCamaraWS/SessoesReunioes.asmx/obterInteiroTeorDiscursosPlenario?codSessao=022.3.54.O&numOrador=1&numQuarto=11&numInsercao=0
-     
-     * Deputados Arquivo para download http://www.camara.leg.br/internet/Deputado/DeputadosXML.zip disponível em http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/deputados/deputados
-       
-     
-     
+ Os dados desta fonte serão obtidos por meio de chamada HTTP (GET) retornando arquivo no formato XML. Para isto, os seguintes serviços foram utilizados:
     
-2. 
-
-
-
+ 
+ Serviço  | URL 
+------------- | -------------
+ListarDiscursosPlenario | http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/listardiscursosplenario
+ObterInteiroTeorDiscursosPlenario  | http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/sessoesreunioes-2/obterinteiroteordiscursosplenario
+Download contendo todos os deputados das três últimas legislaturas: DeputadosXML.zip - atualizado em 01/09/2014. |  http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/deputados/deputados
+ 
+2. Repositório de Dados Eleitorais (http://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais).
+  
+  Os dados desta fonte serão obtidos por meio de chamada HTTP (GET) retornando arquivos compactados no formato TXT e delimitados O dados coletados são referentes aos anos onde houve eleições para as legislaturas acima citadas.
+  
+   
 
 Qual o volume total de dados?
-Que tipo de limpeza precisará ser realizada?
-Que tipo de checagem precisará ser realizada?
-Que tipo de transformação precisará ser realizada?
-Qual o período de tempo considerado no estudo?
+---------------------
 
-Pretendemos trabalhar com todo o intervalo restrito de 3 legislaturas (52,53,54) que corresponde ao intervalo dos ano de  2003 e 2014. Tal restrição se dá devido 
+Segue volume dos dados brutos obtidos para a pesquisa:
+
+Tipo do dado  | Volume 
+------------- | -------------
+Deputados | 780Kb
+Candidatos | 31,1MB
+Sessoes |  169MB
+Discursos | 1,75GB
+**Total**| 1,94GB
+
+
+
+
+Que tipo de limpeza precisará ser realizada?
+---------------------
+
+De uma forma geral, os dados brutos utilizados neste estudo possuem uma boa qualidade. Os mesmos são disponibilizados por órgão oficiais do governo, em serviços voltados para 
+pesquisadores, imprensa e cidadãos em geral ou que fazem parte de uma iniciativa chamada "Dados Abertos".
+
+Para os arquivos originários do serviço de Dados abertos da Câmara dos Deputados, que estão no formato XML, será necessário fazer a separação entre o dado e o metadado(marcadores). Além disto,especificamente para os arquivos que  contém dados sobre os discursos,  que  armazenam seu  conteúdo em Base64 e RTF(Rich Text Format),  será necessário a conversão para o formato ASCII.
+
+Um fato importante a respeito dos dados dos discursos é que os mesmos na verdade são uma transcrição do que foi falado em plenário. Nestas transcrições algumas informações textuais foram inseridas  para representar  situações ocorridas na sessão, tais como palmas e inserções de pequenos trechos de fala do presidente agradecendo pelo discurso. Algumas destas  ocorrências podem ser removidas facilmente, mas  outras não poderão e serão consideradas como parte do discurso.
+
+Por fim, ocasionalmente durante a fase de limpeza, haverá a eliminação de espaços em brancos em strings e  de informações não relevantes ao estudo.
+
+Que tipo de checagem precisará ser realizada?
+---------------------
+
+Conforme  exposto acima, os dados coletados possuem uma boa qualidade e estão  bem documentados. Durante exploração inicial e tratando de forma isolada as fontes, não
+detectamos  nenhum problema que demandasse alguma verificação mais criteriosa nos dados.
+
+Porém, quando tentamos integrar os dados das duas fontes (Câmara de Deputados e Dados eleitorais) com objetivo de consolidar os dados demográficos dos deputados com seus respectivos discursos, notamos  que os únicos atributos que poderíamos utilizar para relacionar uma fonte com outras seria o nome completo do deputado ou o nome político do mesmo.
+Isto de fato é um problema, pois em algumas situações os nomes em questão não estão iguais nas duas fontes. Logo, teremos que realizar verificação destes casos, executando um tratamento diferenciado que em último consiste em uma intervenção manual.
+
+Que tipo de transformação precisará ser realizada?
+---------------------
+
+Pretendemos utilizar técnicas de Mineração de Texto (Text Mining)  com sua fase de pré processamento cuja transformações são a tokenização, conversão para minúsculo, exclusão de pontuação, exclusão de números e de palavras de paradas (stop words).
+Toda a análise da complexidade dos discursos será realizada nesta massa transformada de dados.
+
+Pretendemos conduzir um projeto de experimentos do tipo  fatorial tendo em vista o estudo da influência de fatores demográficos 
+na complexidade dos discursos proferidos, principal objetivo de nosso estudo.
+
+Nesta fase da pesquisa não visualizamos nenhuma atividade de transformação com objetivo de corrigir problema de obliquidade e sobreposição. Mas tal correção não está descartada.
+
+
+Qual o período de tempo considerado no estudo?
+---------------------
+
+Pretendemos trabalhar com o intervalo restrito de 3 legislaturas (52,53,54). Tal intervalo corresponde aos anos de  2003 a 2014. Tal restrição se dá ao fato
+de que a fonte de dados da Câmara dos Deputados só disponibiliza dados completos  para este período.
 
 Qual é a abrangência geográfica considerada no estudo?
+---------------------
 
-Pretendemos trabalhar em dois ou três níveis geográficos que são Brasil, Região e Unidades da Federação
-
-
-```{r}
-summary(cars)
-```
-
-You can also embed plots, for example:
-
-```{r, echo=FALSE}
-plot(cars)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Pretendemos trabalhar com dois níveis geográficos que são Brasil, e Unidades da Federação (UF).
