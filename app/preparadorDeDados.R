@@ -1,3 +1,16 @@
+obterPeriodoLegislaturas<-function( nuLegislatura) {
+    
+    
+    listaLegislaturas <- as.data.frame(rbind(c(51,1999,2003),c(52,2003,2007),c(53,2007,2011),c(54,2011,2015)))
+    names(listaLegislaturas)<-c("NUMERO_LEGISLATURA", "ANO_INICIO","ANO_FIM")
+    
+    return(listaLegislaturas[listaLegislaturas$NUMERO_LEGISLATURA==nuLegislatura,])
+    
+    
+    
+}
+
+
 obterDadosDeputados <- function() {
  
     
@@ -57,6 +70,7 @@ obterDadosDeputados <- function() {
     
     
 }    
+
 
 obterDadosCandidatos<-function() {
     
@@ -163,11 +177,7 @@ obterDadosCompletosDeputadors <- function( ano ){
 }
 
 
-<<<<<<< HEAD:app/etl2.R
-obterDadosDasSessoes <- function( legislatura ) {
-=======
 obterDadosDasSessoes <- function( legislatura, ano ) {
->>>>>>> adab07b6c4fd06e575bb23bd182bf654756c5449:app/preparadorDeDados.R
     
     require(XML)    
     trim <- function( x ) {
@@ -175,7 +185,7 @@ obterDadosDasSessoes <- function( legislatura, ano ) {
     }
     
     pasta.base <- "app/dados/brutos/lista_sessoes/"    
-    pasta.origem<pasta.base
+    pasta.origem<-pasta.base
     
     
     doc = xmlTreeParse(paste(pasta.origem,"listaSessoes_",legislatura,"_",ano,".xml",sep = '') , useInternalNodes = T)
@@ -205,16 +215,48 @@ obterDadosDasSessoes <- function( legislatura, ano ) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
+obterConteudoDiscurso <- function( legislatura ) {
+    
+    require('base64enc') 
+    
+    file.pattern<-"*.xml"
+    filename<-paste(dir,'/',files.v[3],sep = '')
+    
+    #doc = xmlTreeParse(filename, useInternalNodes = T)
+    doc <- xmlParseDoc(filename, HUGE)       
+    
+    
+    discurso_conteudo <- xpathApply(doc, path = '//sessao/discursoRTFBase64', xmlValue)
+    
+    discurso_nome_orador <- xpathApply(doc,path = '//sessao/nome', xmlValue)
+    regmatches(discurso_nome_orador, gregexpr("\\(([^()]+)\\)",discurso_nome_orador, perl=TRUE))<-''
+    
+    discurso_partido_orador <- xpathApply(doc,path = '//sessao/partido', xmlValue)
+    discurso_dia_hora <- xpathApply(doc,path = '//sessao/horaInicioDiscurso', xmlValue)
+    
+    
+    t<-base64decode(paste(discurso_conteudo))
+    
+    str<- rawToChar(t, multiple = FALSE)
+    
+    cao<-gregexpr("\\\\s?'\\w\\w",str)
+    
+    cao_hexa_prefixo<-paste("0x",substr(regmatches(str, cao)[[1]],3,4),sep = '')
+    
+    cao_hexa__to_int<-strtoi(cao_hexa_prefixo)
+    
+    cao_hexa__to_int_multiple<-rawToChar(as.raw(cao_hexa__to_int),multiple =TRUE )
+    
+    regmatches(str, cao) <- list(cao_hexa__to_int_multiple)
+    
+    cao1<-gregexpr("({\\\\)(.+?)(})|(\\\\)(.+?)(\\b)|\\r|\\n|\\(Palmas.\\)",str, perl=TRUE)
+    
+    regmatches(str, cao1)<-''
+    
+    dados<- cbind(discurso_dia_hora,discurso_nome_orador,discurso_partido_orador,str)
+    
+    return(dados)
+    
+}
 
 

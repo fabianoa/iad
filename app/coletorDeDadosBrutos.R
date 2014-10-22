@@ -1,16 +1,4 @@
 
-obterPeriodoLegislaturas<-function( nuLegislatura) {
-    
-    
-    listaLegislaturas <- as.data.frame(rbind(c(51,1999,2003),c(52,2003,2007),c(53,2007,2011),c(54,2011,2015)))
-    names(listaLegislaturas)<-c("NUMERO_LEGISLATURA", "ANO_INICIO","ANO_FIM")
-    
-    return(listaLegislaturas[listaLegislaturas$NUMERO_LEGISLATURA==nuLegislatura,])
-    
-     
-    
-}
-
 
 
 #Classse com métodos para obtenção dos dados 
@@ -19,7 +7,7 @@ obterDiscursos <- function( codSessao, numOrador, numQuarto, numInsercao , numer
     
     ## Método para obter conteudos de discursos em proferidos em determinado ano
     ##    
-    
+    source('app/preparadorDeDados.R')
     numeroLegislatura<-54
     listaAnos<- obterPeriodoLegislaturas(numeroLegislatura)   
     listaAnos<-c((listaAnos$ANO_INICIO):(listaAnos$ANO_FIM-1))
@@ -53,9 +41,11 @@ obterDiscursos <- function( codSessao, numOrador, numQuarto, numInsercao , numer
               url<- paste ("http://www.camara.gov.br/SitCamaraWS/SessoesReunioes.asmx/obterInteiroTeorDiscursosPlenario?","codSessao=",sec$'Codigo da Sessao',"&numOrador=",sec$'Numero do Orador',"&numQuarto=", sec$'Quarto' ,"&numInsercao=",sec$'Insercao',sep = '')
               
               nome.arquivo <- paste (pasta.destino,"/discurso_",i,"_",sec$'Codigo da Sessao',"_",sec$'Numero do Orador',"_", sec$'Quarto' ,"_",sec$'Insercao',".xml",sep = '')
+              if (!file.exists(nome.arquivo)){
+                  download.file(url,nome.arquivo, quiet=TRUE)
+                  Sys.sleep(0.2)
+              }
               
-              download.file(url,nome.arquivo, quiet=TRUE)
-              Sys.sleep(0.2)
         
             },
             error=function(cond) {
@@ -224,7 +214,7 @@ obterListaCandidatos <- function(numeroLegislatura) {
 
 coletarDados<-function(nuLegislatura){
     
-    nuLegislaturas<-c(52,53,54)
+    nuLegislaturas<-c(54,53,52)
        
     
     print('Obtendo lista de Candidatos..')
