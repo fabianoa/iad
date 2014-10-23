@@ -11,9 +11,8 @@ obterPeriodoLegislaturas<-function( nuLegislatura) {
 }
 
 
-obterDadosDeputados <- function() {
+obterDadosDeputados <- function(legislatura) {
  
-    
     require(XML)    
     
     trim <- function( x ) {
@@ -24,47 +23,46 @@ obterDadosDeputados <- function() {
     pasta.origem<-pasta.base
     
     
-    doc = xmlTreeParse(paste(pasta.origem,"/listadeDeputados.xml",sep = '') , useInternalNodes = T)
+    doc = xmlTreeParse(paste(pasta.origem,"/Deputados.xml",sep = '') , useInternalNodes = T)
     idNodes <- getNodeSet(doc, "//deputados")
-    
-    
-    
+            
         
-    deputado_Id_cadastro <- xpathApply(doc, path = '//deputados/deputado/ideCadastro', xmlValue)
+    deputado_Id_cadastro <- xpathApply(doc, path = '//orgao/Deputados/Deputado/ideCadastro', xmlValue)
     deputado_Id_cadastro<-cbind(deputado_Id_cadastro)
     deputado_Id_cadastro<-do.call(rbind.data.frame,deputado_Id_cadastro)
     
         
-    deputado_nome_parlamentar <- xpathApply(doc, path = '//deputados/deputado/nomeParlamentar', xmlValue) 
+    deputado_nome_parlamentar <- xpathApply(doc, path = '//orgao/Deputados/Deputado/nomeParlamentar', xmlValue) 
     deputado_nome_parlamentar<-cbind(deputado_nome_parlamentar)
     deputado_nome_parlamentar<-do.call(rbind.data.frame,deputado_nome_parlamentar)
     
     
-    deputado_url_foto <- xpathApply(doc, path = '//deputados/deputado/urlFoto', xmlValue) 
-    deputado_url_foto<-cbind(deputado_url_foto)
-    deputado_url_foto<-do.call(rbind.data.frame,deputado_url_foto)
+    numLegislatura <- xpathApply(doc, path = '//orgao/Deputados/Deputado/numLegislatura', xmlValue) 
+    numLegislatura<-cbind(numLegislatura)
+    numLegislatura<-do.call(rbind.data.frame,numLegislatura)
     
         
-    deputado_nome <- xpathApply(doc, path = '//deputados/deputado/nome', xmlValue)
+    deputado_nome <- xpathApply(doc, path = '//orgao/Deputados/Deputado/nomeParlamentar', xmlValue)
     deputado_nome<-cbind(deputado_nome)
     deputado_nome<-do.call(rbind.data.frame,deputado_nome)
     
     
-    deputado_partido <- xpathApply(doc, path = '//deputados/deputado/partido', xmlValue)  
+    deputado_partido <- xpathApply(doc, path = '//orgao/Deputados/Deputado/LegendaPartidoEleito', xmlValue)  
     deputado_partido<-cbind(deputado_partido)  
     deputado_partido<-do.call(rbind.data.frame,deputado_partido)
     
     
-    deputado_uf <- xpathApply(doc, path = '//deputados/deputado/uf', xmlValue)  
+    deputado_uf <- xpathApply(doc, path = '//orgao/Deputados/Deputado/UFEleito', xmlValue)  
     deputado_uf<-cbind(deputado_uf)   
     deputado_uf<-do.call(rbind.data.frame,deputado_uf)
     
     
     listadeputados<-NULL
-    listadeputados<-cbind(deputado_Id_cadastro, deputado_nome_parlamentar,deputado_url_foto,deputado_nome, deputado_partido,deputado_uf)
+    listadeputados<-cbind(deputado_Id_cadastro, deputado_nome_parlamentar,numLegislatura,deputado_nome, deputado_partido,deputado_uf)
         
-    names(listadeputados)<-c("Id","Nome Parlamentar","Url","Nome","Partido", "UF")
-
+    names(listadeputados)<-c("Id","Nome Parlamentar","Legislatura","Nome","Partido", "UF")
+    listadeputados<-listadeputados[listadeputados$Legislatura==legislatura,]
+    
  
     return(listadeputados)
     
@@ -215,12 +213,14 @@ obterDadosDasSessoes <- function( legislatura, ano ) {
 }
 
 
-obterConteudoDiscurso <- function( legislatura ) {
+obterConteudoDiscurso <- function( filename ) {
     
     require('base64enc') 
+    require(XML) 
     
-    file.pattern<-"*.xml"
-    filename<-paste(dir,'/',files.v[3],sep = '')
+    trim <- function( x ) {
+        gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
+    }    
     
     #doc = xmlTreeParse(filename, useInternalNodes = T)
     doc <- xmlParseDoc(filename, HUGE)       
@@ -229,11 +229,14 @@ obterConteudoDiscurso <- function( legislatura ) {
     discurso_conteudo <- xpathApply(doc, path = '//sessao/discursoRTFBase64', xmlValue)
     
     discurso_nome_orador <- xpathApply(doc,path = '//sessao/nome', xmlValue)
-    regmatches(discurso_nome_orador, gregexpr("\\(([^()]+)\\)",discurso_nome_orador, perl=TRUE))<-''
+    regmatches(discurso_nome_orador[[1]], gregexpr("\\(([^()]+)\\)|[[:punct:]]",discurso_nome_orador, perl=TRUE))<-''
+    discurso_nome_orador<-trim(discurso_nome_orador[[1]])
     
     discurso_partido_orador <- xpathApply(doc,path = '//sessao/partido', xmlValue)
-    discurso_dia_hora <- xpathApply(doc,path = '//sessao/horaInicioDiscurso', xmlValue)
+    discurso_partido_orador<-trim(discurso_partido_orador[[1]])
     
+    discurso_dia_hora <- xpathApply(doc,path = '//sessao/horaInicioDiscurso', xmlValue)
+    discurso_dia_hora<- discurso_dia_hora[[1]]
     
     t<-base64decode(paste(discurso_conteudo))
     
@@ -259,4 +262,46 @@ obterConteudoDiscurso <- function( legislatura ) {
     
 }
 
-
+obterCorpus <- function( legislatura, ano,nome_deputado ) {
+    
+    require(data.table)
+    
+    legislatura<-54
+    ano<-2012
+    
+    listaDeDeputados <- obterDadosDeputados(legislatura)
+   
+    pasta.base<-paste('app/dados/brutos/conteudo_discursos/',legislatura,sep = '')
+    file.pattern<-paste('discurso_',ano, sep = '')
+    
+    files.v <- dir(path=pasta.base, pattern=file.pattern)
+    
+    conteudo.discursos<-NULL
+    
+    for(i in 1:50){
+        arquivo<-paste(pasta.base,'/',files.v[i],sep = '')
+        conteudo.discursos<-rbind(conteudo.discursos,obterConteudoDiscurso(arquivo))
+    }
+    
+    conteudo.discursos<-as.data.frame(conteudo.discursos)
+    names(conteudo.discursos)
+    
+    conteudo.discursos<-conteudo.discursos[conteudo.discursos$discurso_partido_orador!='\n\n ',]
+    
+    
+    listaDpt<-data.table(listaDeDeputados) 
+    setkeyv(listaDpt, 'Nome')
+    
+    names(conteudo.discursos)[2]<-'Nome Parlamentar'
+    listaDiscur<-data.table(conteudo.discursos)
+    setkeyv(listaDiscur, 'Nome Parlamentar')
+    
+    
+    listaCompletaDeputados1<-merge(x = listaDpt , y =listaDiscur , by = "Nome Parlamentar", all.x=TRUE)
+    
+    
+    conteudo.discursos<-conteudo.discursos[conteudo.discursos$discurso_partido_orador==listaDeputados$deputado_nome_parlamentar,]
+    
+    table<-table(conteudo.discursos$discurso_nome_orador)
+    
+}
