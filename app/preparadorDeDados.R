@@ -12,7 +12,7 @@ obterPeriodoLegislaturas<-function( nuLegislatura) {
 
 
 obterDadosDeputados <- function(legislatura) {
- 
+    
     require(XML)    
     
     trim <- function( x ) {
@@ -25,13 +25,13 @@ obterDadosDeputados <- function(legislatura) {
     
     doc = xmlTreeParse(paste(pasta.origem,"/Deputados.xml",sep = '') , useInternalNodes = T)
     idNodes <- getNodeSet(doc, "//deputados")
-            
-        
+    
+    
     deputado_Id_cadastro <- xpathApply(doc, path = '//orgao/Deputados/Deputado/ideCadastro', xmlValue)
     deputado_Id_cadastro<-cbind(deputado_Id_cadastro)
     deputado_Id_cadastro<-do.call(rbind.data.frame,deputado_Id_cadastro)
     
-        
+    
     deputado_nome_parlamentar <- xpathApply(doc, path = '//orgao/Deputados/Deputado/nomeParlamentar', xmlValue) 
     deputado_nome_parlamentar<-cbind(deputado_nome_parlamentar)
     deputado_nome_parlamentar<-do.call(rbind.data.frame,deputado_nome_parlamentar)
@@ -41,7 +41,7 @@ obterDadosDeputados <- function(legislatura) {
     numLegislatura<-cbind(numLegislatura)
     numLegislatura<-do.call(rbind.data.frame,numLegislatura)
     
-        
+    
     deputado_nome <- xpathApply(doc, path = '//orgao/Deputados/Deputado/nomeParlamentar', xmlValue)
     deputado_nome<-cbind(deputado_nome)
     deputado_nome<-do.call(rbind.data.frame,deputado_nome)
@@ -59,11 +59,11 @@ obterDadosDeputados <- function(legislatura) {
     
     listadeputados<-NULL
     listadeputados<-cbind(deputado_Id_cadastro, deputado_nome_parlamentar,numLegislatura,deputado_nome, deputado_partido,deputado_uf)
-        
+    
     names(listadeputados)<-c("Id","Nome Parlamentar","Legislatura","Nome","Partido", "UF")
     listadeputados<-listadeputados[listadeputados$Legislatura==legislatura,]
     
- 
+    
     return(listadeputados)
     
     
@@ -114,29 +114,29 @@ obterDadosCompletosDeputadors <- function( ano ){
     listaDeputados<-obterDadosDeputados()
     listaCandidatos<-obterDadosCandidatos()
     names(listaCandidatos)[1]<-"Nome"
-
+    
     names(listaCandidatos)[2]<-"Nome Parlamentar"
     
-  
+    
     listaDeputados$'Nome Parlamentar'<-chartr(paste(names(unwanted_array), collapse=''),
-           paste(unwanted_array, collapse=''),
-           listaDeputados$'Nome Parlamentar')
+                                              paste(unwanted_array, collapse=''),
+                                              listaDeputados$'Nome Parlamentar')
     
     
     listaDeputados$'Nome'<-chartr(paste(names(unwanted_array), collapse=''),
-                                              paste(unwanted_array, collapse=''),
-                                              listaDeputados$'Nome')
+                                  paste(unwanted_array, collapse=''),
+                                  listaDeputados$'Nome')
     
     listaCandidatos$'Nome Parlamentar'<-chartr(paste(names(unwanted_array), collapse=''),
-                                paste(unwanted_array, collapse=''),
-                                listaCandidatos$'Nome Parlamentar')
+                                               paste(unwanted_array, collapse=''),
+                                               listaCandidatos$'Nome Parlamentar')
     
     
     listaDeputados$'Nome'<-chartr(paste(names(unwanted_array), collapse=''),
-                                              paste(unwanted_array, collapse=''),
-                                              listaDeputados$'Nome')
+                                  paste(unwanted_array, collapse=''),
+                                  listaDeputados$'Nome')
     
-     
+    
     dt1<-data.table(listaDeputados) 
     setkeyv(dt1, 'Nome')
     dt1 <- dt1[order(Nome),] 
@@ -166,12 +166,12 @@ obterDadosCompletosDeputadors <- function( ano ){
     
     listaDeputadosSemInformacaoDemografica<-data.table(listaCompletaDeputados1[is.na(listaCompletaDeputados1$DATA_NASCIMENTO),]$"Nome Parlamentar")
     
- 
+    
     
     return(listaParcialDeputados)
     
     
-
+    
 }
 
 
@@ -256,21 +256,46 @@ obterConteudoDiscurso <- function( filename ) {
     
     regmatches(str, cao1)<-''
     
-    dados<- cbind(discurso_dia_hora,discurso_nome_orador,discurso_partido_orador,str)
+    
+    dados<- cbind(discurso_dia_hora,discurso_nome_orador,discurso_partido_orador,calcularIndiceComplexidade(str),str)
     
     return(dados)
     
 }
 
-obterCorpus <- function( legislatura, ano,nome_deputado ) {
+
+
+calcularIndiceComplexidade<- function(Discurso){
+    
+    
+    require(tm)
+    
+    #Discurso<-'SILVIA MARIA SOARES FERREIRA PSICÓLOGA E USUÁRIA DE,  SAÚDE MENTAL e fisica' 
+    
+    
+    ctrl <- list(removePunctuation = list(preserve_intra_word_dashes = TRUE),
+                 wordLengths = c(1, Inf))
+    
+    t<-as.data.frame(termFreq(PlainTextDocument(Discurso),control = ctrl))
+    
+    ttr<-nrow(t)/sum(t)
+    
+    return(cbind(ttr,nrow(t)))
+    
+}
+
+
+
+
+
+obterListaDeDiscursos <- function( legislatura, ano ) {
     
     require(data.table)
     
-    legislatura<-54
-    ano<-2012
     
     listaDeDeputados <- obterDadosDeputados(legislatura)
-   
+    listaDeCandidatos<-obterDadosCandidatos(legislatura)
+    
     pasta.base<-paste('app/dados/brutos/conteudo_discursos/',legislatura,sep = '')
     file.pattern<-paste('discurso_',ano, sep = '')
     
@@ -278,9 +303,11 @@ obterCorpus <- function( legislatura, ano,nome_deputado ) {
     
     conteudo.discursos<-NULL
     
-    for(i in 1:50){
+    for(i in 1:100){
         arquivo<-paste(pasta.base,'/',files.v[i],sep = '')
-        conteudo.discursos<-rbind(conteudo.discursos,obterConteudoDiscurso(arquivo))
+        conteudo<-obterConteudoDiscurso(arquivo)
+        conteudo.discursos<-rbind(conteudo.discursos,conteudo)
+        print(i)
     }
     
     conteudo.discursos<-as.data.frame(conteudo.discursos)
@@ -296,12 +323,18 @@ obterCorpus <- function( legislatura, ano,nome_deputado ) {
     listaDiscur<-data.table(conteudo.discursos)
     setkeyv(listaDiscur, 'Nome Parlamentar')
     
+    listaCompletadiscursos<-merge(x =listaDiscur  , y =listaDpt  , by = "Nome Parlamentar", all.x=TRUE, allow.cartesian =TRUE)
     
-    listaCompletaDeputados1<-merge(x = listaDpt , y =listaDiscur , by = "Nome Parlamentar", all.x=TRUE)
+    listaCompletadiscursos$'discurso_partido_orador'<-NULL
+    listaCompletadiscursos$'Nome'<-NULL
+    setnames(listaCompletadiscursos,'Nome Parlamentar','Nome_Orador')
+    setnames(listaCompletadiscursos,'discurso_dia_hora','Dia_Hora')
+    setnames(listaCompletadiscursos,'str','Conteudo')
+    
+        
     
     
-    conteudo.discursos<-conteudo.discursos[conteudo.discursos$discurso_partido_orador==listaDeputados$deputado_nome_parlamentar,]
-    
-    table<-table(conteudo.discursos$discurso_nome_orador)
+    return(listaCompletadiscursos)
     
 }
+
