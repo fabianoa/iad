@@ -8,3 +8,4 @@ Segue algumas referências coletadas , alguns estão marcados com tags do tipo (
 
 * (Portal de Referência) [RDatamining.com - R and DataMining](http://www.rdatamining.com/)
 
+* http://vli-journal.org/issues/01.1/issue01.1.10.pdf
