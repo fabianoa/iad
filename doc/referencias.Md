@@ -11,3 +11,5 @@ Segue algumas referências coletadas , alguns estão marcados com tags do tipo (
 * http://vli-journal.org/issues/01.1/issue01.1.10.pdf
 
 * http://reaktanz.de/?c=hacking&s=koRpus
+* How Variable May a Constant be? Measures of Lexical Richness in Perspective
+* Vocabulary Knowledge: Human ratings and automated measures
