@@ -71,6 +71,7 @@ obterDadosDeputados <- function(legislatura) {
 
 
 obterDadosCandidatos<-function() {
+obterDadosCandidatos<-function(legislatura) {
     
     fileList <- list.files(path="app/dados/brutos/lista_candidatos/", pattern=".txt")
     fileList <- paste("app/dados/brutos/lista_candidatos/",fileList,sep = '')
@@ -269,18 +270,26 @@ calcularIndiceComplexidade<- function(Discurso){
     
     
     require(tm)
+    require("koRpus")
     
     #Discurso<-'SILVIA MARIA SOARES FERREIRA PSICÓLOGA E USUÁRIA DE,  SAÚDE MENTAL e fisica' 
     
+    #Discurso<-'SILVIA MARIA SOARES FERREIRA PSICÓLOGA E USUÁRIA DE,  SAÚDE MENTAL e fisica' 
+    #ctrl <- list(removePunctuation = list(preserve_intra_word_dashes = TRUE), wordLengths = c(1, Inf))
+    # t<-as.data.frame(termFreq(PlainTextDocument(Discurso),control = ctrl))
     
     ctrl <- list(removePunctuation = list(preserve_intra_word_dashes = TRUE),
                  wordLengths = c(1, Inf))
     
     t<-as.data.frame(termFreq(PlainTextDocument(Discurso),control = ctrl))
+    t<-tokenize(Discurso,format = 'obj',lang='es')
     
     ttr<-nrow(t)/sum(t)
+    lexdiv<-lex.div(t,measure = c("TTR","MTLD","R"),char = c("TTR","MTLD","R"))
+
     
     return(cbind(ttr,nrow(t)))
+    return(cbind(lexdiv@TTR,lexdiv@MTLD$MTLD,lexdiv@R.ld ,t@desc$words))
     
 }
 
@@ -292,9 +301,11 @@ obterListaDeDiscursos <- function( legislatura, ano ) {
     
     require(data.table)
     
+    require(data.table)
     
     listaDeDeputados <- obterDadosDeputados(legislatura)
     listaDeCandidatos<-obterDadosCandidatos(legislatura)
+    #listaDeCandidatos<-obterDadosCandidatos()
     
     pasta.base<-paste('app/dados/brutos/conteudo_discursos/',legislatura,sep = '')
     file.pattern<-paste('discurso_',ano, sep = '')
@@ -333,6 +344,8 @@ obterListaDeDiscursos <- function( legislatura, ano ) {
     
         
     
+    cor(as.data.frame(listaCompletadiscursos$ttr),as.data.frame(listaCompletadiscursos$V5))
+            
     
     return(listaCompletadiscursos)
     
