@@ -233,8 +233,19 @@ coletarDados<-function(nuLegislatura){
         obterListaSessoes(i)
     }
     
+    print('Obtendo lista de Candidatos..')
+    for(i in nuLegislaturas){
     
     listaDeputados<-obterDadosDeputados()
+        i<-52
+        listaDeputados<-obterDadosDeputados(i)
+        
+        for (j in listaDeputados[,1]){
+            obterDeputados(j,i)
+        }
+        
+    } 
+   
     
    
     for (i in listaDeputados[,1]){
