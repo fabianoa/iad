@@ -1,3 +1,10 @@
+obterLegislaturas<-function() {
+    
+    return(c(53,54))
+    
+}
+
+
 obterPeriodoLegislaturas<-function( nuLegislatura) {
     
     
@@ -165,8 +172,6 @@ obterListaDetalhadaDeputado <- function(legislatura){
 }
 
 
-
-
 obterDadosCandidatos<-function(legislatura) {
     
     pasta.base <- "app/dados/brutos/lista_candidatos/"    
@@ -193,6 +198,7 @@ obterDadosCandidatos<-function(legislatura) {
     }
     
     names(listaCandidatos)<- c("NOME_CANDIDATO","NOME_URNA_CANDIDATO","SIGLA_PARTIDO","CODIGO_OCUPACAO","DESCRICAO_OCUPACAO","DATA_NASCIMENTO","CODIGO_SEXO","DESCRICAO_SEXO","COD_GRAU_INSTRUCAO","CODIGO_ESTADO_CIVIL","DESCRICAO_ESTADO_CIVIL")
+    write.csv(listaCandidatos, "data2.csv", row.names=FALSE)
     
     
     return(listaCandidatos)
@@ -233,7 +239,7 @@ obterDadosCompletosDeputados <- function( legislatura ){
                                                listaCandidatos$NOME_CANDIDATO)
     
     
-    listaCandidatos$NOME_URNA_CANDIDATO<-?chartr(paste(names(unwanted_array), collapse=''),
+    listaCandidatos$NOME_URNA_CANDIDATO<-chartr(paste(names(unwanted_array), collapse=''),
                                   paste(unwanted_array, collapse=''),
                                   listaCandidatos$NOME_URNA_CANDIDATO)
     
@@ -247,18 +253,26 @@ obterDadosCompletosDeputados <- function( legislatura ){
     
     names(listaDeputados)[3]<-"Nome Parlamentar"
     
+    out <- tryCatch(
+{
     
-    listaCandidatos[listaCandidatos$Nome=="ANTHONY WILLIAN GAROTINHO MATHEUS DE OLIVEIRA",][1]<-"ANTHONY WILLIAM GAROTINHO MATHEUS DE OLIVEIRA"
-    listaCandidatos[listaCandidatos$Nome=="CARLAILE DE JESUS PEDROSA",][1]<-"CARLAILE JESUS PEDROSA"
-    listaCandidatos[listaCandidatos$Nome=="EDSON SANTOS",][1]<-"EDSON SANTOS DE SOUZA"
-    listaCandidatos[listaCandidatos$Nome=="JOSE EDSON DA SILVA",][1]<-"EDSON DA SILVA"
-    listaCandidatos[listaCandidatos$Nome=="EVANDRO COSTA MILHOMEM",][1]<-"EVANDRO COSTA MILHOMEN"
-    listaCandidatos[listaCandidatos$Nome=="FRANCISCO EDINALDO PRACIANO",][1]<-"FRANCISCO EDNALDO PRACIANO"
-    listaCandidatos[listaCandidatos$Nome=="IRACEMA MARIA PORTELA NUNES NOGUEIRA LIMA",][1]<-"IRACEMA MARIA PORTELLA NUNES NOGUEIRA LIMA"
+    listaCandidatos[listaCandidatos$"Nome Parlamentar"=="GAROTINHO",][2]<-"ANTHONY GAROTINHO"
+    listaCandidatos[listaCandidatos$"Nome Parlamentar"=="ONOFRE AGOSTINI",][2]<-"ONOFRE SANTO AGOSTINI"
+    listaCandidatos[listaCandidatos$"Nome Parlamentar"=="EVANDRO MILHOMEM",][2]<-"EVANDRO MILHOMEN"
+    listaCandidatos[listaCandidatos$"Nome Parlamentar"=="PRACIANO",][2]<-"FRANCISCO PRACIANO"
+    listaCandidatos[listaCandidatos$"Nome Parlamentar"=="IRACEMA PORTELA",][2]<-"IRACEMA PORTELLA"
     
-    listaCandidatos[listaCandidatos$Nome=="JOSE ALBERTO OLIVEIRA FILHO",][1]<-"JOSE ALBERTO OLIVEIRA FILHO"
-    listaCandidatos[listaCandidatos$Nome=="JOSE RIBAMAR COSTA ALVES",][1]<-"JOSE DE RIBAMAR COSTA ALVES"
     
+},
+error=function(cond) {
+    
+},
+finally={
+    
+}
+    
+    )        
+   
     
     dt1<-data.table(listaDeputados) 
     setkeyv(dt1, 'Nome')
@@ -268,7 +282,6 @@ obterDadosCompletosDeputados <- function( legislatura ){
     setkeyv(dt2, 'Nome')
     dt2 <- dt2[order(Nome),] 
     
-    write.csv(dt2, "data2.csv", row.names=FALSE)
     write.csv(dt1, "data1.csv", row.names=FALSE)
     
     
@@ -395,24 +408,41 @@ calcularIndiceComplexidade<- function(Discurso){
     
     require(tm)
    
-    #Discurso<-'Isto é apenas um teste, ok, apenas um teste ?'
+    #Discurso<-'}  }'
         
-    ctrl <- list(removePunctuation = list(preserve_intra_word_dashes = TRUE),
-                 wordLengths = c(1, Inf))
-          
-    text<-as.data.frame(termFreq(PlainTextDocument(Discurso),control = ctrl))
-        
-    #Soma dos elementos do texto
-    text.sum<-sum(text)
-    #Soma do elementos do texto que possuem apenas uma ocorrência
-    hapax.sum<-sum(text[text[1]==1,])
-    #Soma dos elementos distintos do texto
-    text.distinct<-nrow(text)
-   
-     
-    hapax.percentage<-hapax.sum/text.sum
-    text.type.ratio<-text.distinct/text.sum
+    #ctrl <- list(removePunctuation = list(preserve_intra_word_dashes = TRUE),
+    #             wordLengths = c(1, Inf))
     
+    
+    chapter.words.v <- tolower(Discurso)
+    chapter.words.l <- strsplit(chapter.words.v, "\\W")
+    chapter.word.v <- unlist(chapter.words.l)
+    chapter.word.v <- chapter.word.v[which(chapter.word.v!="")]
+    
+    if(length(chapter.word.v)>0){
+        text <- as.data.frame(table(chapter.word.v))
+        
+        
+        
+        #text<-as.data.frame(termFreq(PlainTextDocument(Discurso),control = ctrl))
+        
+        #Soma dos elementos do texto
+        text.sum<-sum(text$Freq)
+        #Soma do elementos do texto que possuem apenas uma ocorrência
+        hapax.sum<-sum(text[text$Freq==1,]$Freq)
+        #Soma dos elementos distintos do texto
+        text.distinct<-nrow(text)
+        
+        
+        hapax.percentage<-hapax.sum/text.sum
+        text.type.ratio<-text.distinct/text.sum
+    }else{
+        text.sum<-0
+        hapax.percentage<-0
+        text.type.ratio<-0
+    }
+        
+
     
     return(cbind(hapax.percentage,text.type.ratio,text.sum))
     
@@ -422,66 +452,87 @@ calcularIndiceComplexidade<- function(Discurso){
 obterListaDeDiscursos <- function( legislatura, ano ) {
     
     require(data.table)
-    legislatura<-54
-    ano<-2012
+ 
+    legislaturas<- obterLegislaturas()
+    listaFinalCompletadiscursos<-NULL
     
-    listaDeDeputados<-obterDadosCompletosDeputados(legislatura)
-   
-    pasta.base<-paste('app/dados/brutos/conteudo_discursos/',legislatura,sep = '')
-    file.pattern<-paste('discurso_',ano, sep = '')
+    for(legislatura in legislaturas){
     
-    files.v <- dir(path=pasta.base, pattern=file.pattern)
+        anosLegislatura<-  obterPeriodoLegislaturas(legislatura)  
+        
+        for(ano in anosLegislatura$ANO_INICIO:(anosLegislatura$ANO_FIM-1)){
+        
+            listaDeDeputados<-obterDadosCompletosDeputados(legislatura)
+            
+            pasta.base<-paste('app/dados/brutos/conteudo_discursos/',legislatura,sep = '')
+            file.pattern<-paste('discurso_',ano, sep = '')
+            
+            files.v <- dir(path=pasta.base, pattern=file.pattern)
+            
+            conteudo.discursos<-NULL
+            
+            for(i in 1:length(files.v)){
+                arquivo<-paste(pasta.base,'/',files.v[i],sep = '')
+                conteudo<-obterConteudoDiscurso(arquivo)
+                conteudo.discursos<-rbind(conteudo.discursos,conteudo)
+                print(i)
+            }
+            
+            conteudo.discursos<-as.data.frame(conteudo.discursos)
+            names(conteudo.discursos)
+            
+            conteudo.discursos<-conteudo.discursos[conteudo.discursos$discurso_partido_orador!='\n\n ',]
+            
+            listaDpt<-data.table(listaDeDeputados) 
+            setkeyv(listaDpt, 'Nome Parlamentar')
+            
+            names(conteudo.discursos)[2]<-'Nome Parlamentar'
+            listaDiscur<-data.table(conteudo.discursos)
+            setkeyv(listaDiscur, 'Nome Parlamentar')
+            
+            listaCompletadiscursos<-merge(x =listaDiscur  , y =listaDpt  , by = "Nome Parlamentar", all.x=TRUE, allow.cartesian =TRUE)
+            
+            listaCompletadiscursos$'discurso_partido_orador'<-NULL
+            listaCompletadiscursos$'DATA_NASCIMENTO'<-NULL
+            setnames(listaCompletadiscursos,'Nome Parlamentar','Nome_Orador')
+            setnames(listaCompletadiscursos,'discurso_dia_hora','Dia_Hora')
+            #setnames(listaCompletadiscursos,'str','Conteudo')
+            
+            listaCompletadiscursos<-listaCompletadiscursos[!is.na(listaCompletadiscursos$Nome),]
+            listaCompletadiscursos<-listaCompletadiscursos[as.numeric(as.character(listaCompletadiscursos$text.sum))>100,]
+            
+            Sys.setlocale("LC_TIME", "C")
+            
+            require('chron')
+            listaCompletadiscursos$dataNascimento<-as.Date(as.Date(listaCompletadiscursos$dataNascimento, format="%d/%m/%Y"))
+            idade<-ano-as.numeric(format(listaCompletadiscursos$dataNascimento,"%Y"))
+            listaCompletadiscursos<-cbind(listaCompletadiscursos,as.data.frame(idade))
+            
+            listaFinalCompletadiscursos<-rbind(listaFinalCompletadiscursos,listaCompletadiscursos)
+        
+        }
     
-    conteudo.discursos<-NULL
     
-    for(i in 1:length(files.v)){
-        arquivo<-paste(pasta.base,'/',files.v[i],sep = '')
-        conteudo<-obterConteudoDiscurso(arquivo)
-        conteudo.discursos<-rbind(conteudo.discursos,conteudo)
-        print(i)
     }
     
-    conteudo.discursos<-as.data.frame(conteudo.discursos)
-    names(conteudo.discursos)
     
-    conteudo.discursos<-conteudo.discursos[conteudo.discursos$discurso_partido_orador!='\n\n ',]
     
-    listaDpt<-data.table(listaDeDeputados) 
-    setkeyv(listaDpt, 'Nome Parlamentar')
     
-    names(conteudo.discursos)[2]<-'Nome Parlamentar'
-    listaDiscur<-data.table(conteudo.discursos)
-    setkeyv(listaDiscur, 'Nome Parlamentar')
     
-    listaCompletadiscursos<-merge(x =listaDiscur  , y =listaDpt  , by = "Nome Parlamentar", all.x=TRUE, allow.cartesian =TRUE)
-    
-    listaCompletadiscursos$'discurso_partido_orador'<-NULL
-    listaCompletadiscursos$'DATA_NASCIMENTO'<-NULL
-    setnames(listaCompletadiscursos,'Nome Parlamentar','Nome_Orador')
-    setnames(listaCompletadiscursos,'discurso_dia_hora','Dia_Hora')
-    setnames(listaCompletadiscursos,'str','Conteudo')
-             
-    listaCompletadiscursos<-listaCompletadiscursos[!is.na(listaCompletadiscursos$Nome),]
-    listaCompletadiscursos<-listaCompletadiscursos[as.numeric(as.character(listaCompletadiscursos$text.sum))>100,]
-    
-    Sys.setlocale("LC_TIME", "C")
-    
-    require('chron')
-    listaCompletadiscursos$dataNascimento<-as.Date(chron(format(as.Date(listaCompletadiscursos$dataNascimento, format="%d/%m/%Y"), "%m/%d/%y")))
-    idade<-ano-as.numeric(format(listaCompletadiscursos$dataNascimento,"%Y"))
-    listaCompletadiscursos<-cbind(listaCompletadiscursos,as.data.frame(idade))
     
         
     lista<-listaCompletadiscursos[is.na(listaCompletadiscursos$COD_GRAU_INSTRUCAO),]
     
-    tab<-as.data.frame(table(lista$Nome))
+    
+    
+    tab<-as.data.frame(table(lista$Nome_Orador))
     
     require(ggplot2)
    
-    hist(x =as.numeric(as.character(listaCompletadiscursos$text.type.ratio)) )
+    hist(x =as.numeric(as.character(listaCompletadiscursos$idade)) )
  
     
-    qplot(x = as.numeric(as.character(listaCompletadiscursos$ttr)), y=as.numeric(as.character(listaCompletadiscursos$V5)) ) + geom_point(shape=1) +?geom_smooth(method = "lm", se = TRUE)
+    qplot(x = as.numeric(as.character(listaCompletadiscursos$ttr)), y=as.numeric(as.character(listaCompletadiscursos$V5)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
     
     cor (x = as.numeric(as.character(listaCompletadiscursos$text.type.ratio)), y=as.numeric(as.character(listaCompletadiscursos$text.sum)) ) 
     
@@ -496,9 +547,7 @@ obterListaDeDiscursos <- function( legislatura, ano ) {
     
     
     cor (x = as.numeric(as.character(listaCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaCompletadiscursos$idade)) ) 
-    cor (x = as.numeric(as.character(listaCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaCompletadiscursos$idade)) ) 
-    
-    
+    cor (x = as.numeric(as.character(listaCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaCompletadiscursos$COD_GRAU_INSTRUCAO)) ) 
     cor (x = as.numeric(as.character(listaCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaCompletadiscursos$COD_GRAU_INSTRUCAO)) ) 
     
     
