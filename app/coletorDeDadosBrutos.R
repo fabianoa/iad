@@ -3,12 +3,12 @@
 
 #Classse com métodos para obtenção dos dados 
 
-obterDiscursos <- function( codSessao, numOrador, numQuarto, numInsercao , numeroLegislatura) {
+obterDiscursos <- function(numeroLegislatura) {
     
     ## Método para obter conteudos de discursos em proferidos em determinado ano
     ##    
     source('app/preparadorDeDados.R')
-    numeroLegislatura<-54
+    numeroLegislatura<-52
     listaAnos<- obterPeriodoLegislaturas(numeroLegislatura)   
     listaAnos<-c((listaAnos$ANO_INICIO):(listaAnos$ANO_FIM-1))
     
@@ -224,7 +224,6 @@ coletarDados<-function(nuLegislatura){
     
     print('Obtendo lista de Deputados...')
     obterListaDeputados()
-    
     
     
     
