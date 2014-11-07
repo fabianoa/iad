@@ -1,6 +1,7 @@
 obterLegislaturas<-function() {
     
-    return(c(53,54))
+
+    return(c(52,53,54))
     
 }
 
@@ -192,13 +193,13 @@ obterDadosCandidatos<-function(legislatura) {
         f<-f[f$V10=='DEPUTADO FEDERAL',]
         f<-f[f$V42=='ELEITO' | f$V42=='SUPLENTE',]
         
-        c<- data.frame(iconv(f$V11, to='ASCII//TRANSLIT'),f$V14,f$V18,f$V24,f$V25,f$V26,f$V29,f$V30,f$V31,f$V35,f$V36)
+        c<- data.frame(iconv(f$V11, to='ASCII//TRANSLIT'),f$V14,f$V31,f$V35)
         listaCandidatos<-rbind(listaCandidatos,c)
         
     }
     
-    names(listaCandidatos)<- c("NOME_CANDIDATO","NOME_URNA_CANDIDATO","SIGLA_PARTIDO","CODIGO_OCUPACAO","DESCRICAO_OCUPACAO","DATA_NASCIMENTO","CODIGO_SEXO","DESCRICAO_SEXO","COD_GRAU_INSTRUCAO","CODIGO_ESTADO_CIVIL","DESCRICAO_ESTADO_CIVIL")
-    write.csv(listaCandidatos, "data2.csv", row.names=FALSE)
+    names(listaCandidatos)<- c("NOME_CANDIDATO","NOME_URNA_CANDIDATO","COD_GRAU_INSTRUCAO","CODIGO_ESTADO_CIVIL")
+    write.csv(listaCandidatos, paste("cand",legislatura,".csv",sep = ''), row.names=FALSE)
     
     
     return(listaCandidatos)
@@ -282,7 +283,7 @@ finally={
     setkeyv(dt2, 'Nome')
     dt2 <- dt2[order(Nome),] 
     
-    write.csv(dt1, "data1.csv", row.names=FALSE)
+    write.csv(dt1, paste("data",legislatura,".csv",sep = ''), row.names=FALSE)
     
     
     listaParcialDeputados<-merge(x = dt1, y = dt2, by = "Nome", all.x=TRUE)
@@ -290,8 +291,8 @@ finally={
     listaParcialDeputados$'Nome Parlamentar.y'<-NULL
     setnames(listaParcialDeputados,"Nome Parlamentar.x","Nome Parlamentar")
     
-    listaDeputadosComInformacaoDemografica<-data.table(listaParcialDeputados[!is.na(listaParcialDeputados$DATA_NASCIMENTO),])
-    listaDeputadosSemInformacaoDemografica<-data.table(listaParcialDeputados[is.na(listaParcialDeputados$DATA_NASCIMENTO),])
+    listaDeputadosComInformacaoDemografica<-data.table(listaParcialDeputados[!is.na(listaParcialDeputados$COD_GRAU_INSTRUCAO),])
+    listaDeputadosSemInformacaoDemografica<-data.table(listaParcialDeputados[is.na(listaParcialDeputados$COD_GRAU_INSTRUCAO),])
     listaDeputadosSemInformacaoDemografica<-listaDeputadosSemInformacaoDemografica[, 1:10, with = FALSE]
     
     setkeyv(listaDeputadosSemInformacaoDemografica, 'Nome Parlamentar')
@@ -473,7 +474,7 @@ obterListaDeDiscursos <- function( legislatura, ano ) {
             
             for(i in 1:length(files.v)){
                 arquivo<-paste(pasta.base,'/',files.v[i],sep = '')
-                conteudo<-obterConteudoDiscurso(arquivo)
+                conteudo<-cbind(obterConteudoDiscurso(arquivo),ano)
                 conteudo.discursos<-rbind(conteudo.discursos,conteudo)
                 print(i)
             }
@@ -493,7 +494,6 @@ obterListaDeDiscursos <- function( legislatura, ano ) {
             listaCompletadiscursos<-merge(x =listaDiscur  , y =listaDpt  , by = "Nome Parlamentar", all.x=TRUE, allow.cartesian =TRUE)
             
             listaCompletadiscursos$'discurso_partido_orador'<-NULL
-            listaCompletadiscursos$'DATA_NASCIMENTO'<-NULL
             setnames(listaCompletadiscursos,'Nome Parlamentar','Nome_Orador')
             setnames(listaCompletadiscursos,'discurso_dia_hora','Dia_Hora')
             #setnames(listaCompletadiscursos,'str','Conteudo')
@@ -521,7 +521,7 @@ obterListaDeDiscursos <- function( legislatura, ano ) {
     
     
         
-    lista<-listaCompletadiscursos[is.na(listaCompletadiscursos$COD_GRAU_INSTRUCAO),]
+    listaFinalCompletadiscursos<-listaFinalCompletadiscursos[!is.na(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO),]
     
     
     
@@ -529,10 +529,12 @@ obterListaDeDiscursos <- function( legislatura, ano ) {
     
     require(ggplot2)
    
-    hist(x =as.numeric(as.character(listaCompletadiscursos$idade)) )
- 
+    hist(x =as.numeric(as.character(listaCompletadiscursos$text.type.ratio)) )
+    hist(x =log(as.numeric(as.character(listaFinalCompletadiscursos$text.sum))),breaks=100 )
     
-    qplot(x = as.numeric(as.character(listaCompletadiscursos$ttr)), y=as.numeric(as.character(listaCompletadiscursos$V5)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
+    density(as.numeric(as.character(listaFinalCompletadiscursos$text.sum)))
+    hist(x =as.numeric(as.character(listaCompletadiscursos$hapax.percentage)) )
+    
     
     cor (x = as.numeric(as.character(listaCompletadiscursos$text.type.ratio)), y=as.numeric(as.character(listaCompletadiscursos$text.sum)) ) 
     
@@ -540,15 +542,23 @@ obterListaDeDiscursos <- function( legislatura, ano ) {
     
         
     
-    cor (x = as.numeric(as.character(listaCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaCompletadiscursos$text.type.ratio)) ) 
+    cor (x = as.numeric(as.character(listaFinalCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaFinalCompletadiscursos$text.type.ratio)) ) 
     
     
-    qplot(y = as.numeric(as.character(listaCompletadiscursos$hapax.percentage)), x=as.numeric(as.character(listaCompletadiscursos$idade)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
+    qplot(y = as.numeric(as.character(listaFinalCompletadiscursos$hapax.percentage)), x=as.numeric(as.character(listaFinalCompletadiscursos$idade)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
+    qplot(y = as.numeric(as.character(listaCompletadiscursos$text.type.ratio)), x=as.numeric(as.character(listaCompletadiscursos$idade)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
+
+    cor (x = as.numeric(as.character(listaFinalCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaFinalCompletadiscursos$idade)) ) 
+    cor (x = as.numeric(as.character(listaFinalCompletadiscursos$text.type.ratio)), y=as.numeric(as.character(listaFinalCompletadiscursos$idade)) ) 
     
     
-    cor (x = as.numeric(as.character(listaCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaCompletadiscursos$idade)) ) 
-    cor (x = as.numeric(as.character(listaCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaCompletadiscursos$COD_GRAU_INSTRUCAO)) ) 
-    cor (x = as.numeric(as.character(listaCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaCompletadiscursos$COD_GRAU_INSTRUCAO)) ) 
+    qplot(y = as.numeric(as.character(listaFinalCompletadiscursos$hapax.percentage)), x=as.numeric(as.character(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
+    qplot(y = as.numeric(as.character(listaFinalCompletadiscursos$text.type.ratio)), x=as.numeric(as.character(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
+    
+    
+    
+    cor (x = as.numeric(as.character(listaFinalCompletadiscursos$text.type.ratio)), y=as.numeric(as.character(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO)) ) 
+    cor (x = as.numeric(as.character(listaFinalCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO)) ) 
     
     
     return(listaCompletadiscursos)
