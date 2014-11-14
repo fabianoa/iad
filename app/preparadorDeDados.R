@@ -461,7 +461,7 @@ calcularIndiceComplexidade<- function(Discurso){
 
 obterListaDeDiscursos <- function( legislatura) {
     
-    legislatura<-52
+    legislatura<-54
     
       require(data.table)
      listaFinalCompletadiscursos<-NULL
