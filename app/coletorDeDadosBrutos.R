@@ -8,7 +8,7 @@ obterDiscursos <- function(numeroLegislatura) {
     ## Método para obter conteudos de discursos em proferidos em determinado ano
     ##    
     source('app/preparadorDeDados.R')
-    numeroLegislatura<-52
+    numeroLegislatura<-54
     listaAnos<- obterPeriodoLegislaturas(numeroLegislatura)   
     listaAnos<-c((listaAnos$ANO_INICIO):(listaAnos$ANO_FIM-1))
     

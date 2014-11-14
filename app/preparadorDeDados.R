@@ -1,6 +1,7 @@
 obterLegislaturas<-function() {
     
-    return(c(53,54))
+
+    return(c(53))
     
 }
 
@@ -190,7 +191,7 @@ obterDadosCandidatos<-function(legislatura) {
         f<-read.csv(i,sep=';',header = FALSE, )
         
         f<-f[f$V10=='DEPUTADO FEDERAL',]
-        f<-f[f$V42=='ELEITO' | f$V42=='SUPLENTE',]
+        #f<-f[f$V42=='ELEITO' | f$V42=='SUPLENTE',]
         
         c<- data.frame(iconv(f$V11, to='ASCII//TRANSLIT'),f$V14,f$V31,f$V35)
         listaCandidatos<-rbind(listaCandidatos,c)
@@ -198,8 +199,6 @@ obterDadosCandidatos<-function(legislatura) {
     }
     
     names(listaCandidatos)<- c("NOME_CANDIDATO","NOME_URNA_CANDIDATO","COD_GRAU_INSTRUCAO","CODIGO_ESTADO_CIVIL")
-    write.csv(listaCandidatos, paste("cand",legislatura,".csv",sep = ''), row.names=FALSE)
-    
     
     return(listaCandidatos)
     
@@ -255,13 +254,26 @@ obterDadosCompletosDeputados <- function( legislatura ){
     
     out <- tryCatch(
 {
-    
-    listaCandidatos[listaCandidatos$"Nome Parlamentar"=="GAROTINHO",][2]<-"ANTHONY GAROTINHO"
-    listaCandidatos[listaCandidatos$"Nome Parlamentar"=="ONOFRE AGOSTINI",][2]<-"ONOFRE SANTO AGOSTINI"
-    listaCandidatos[listaCandidatos$"Nome Parlamentar"=="EVANDRO MILHOMEM",][2]<-"EVANDRO MILHOMEN"
-    listaCandidatos[listaCandidatos$"Nome Parlamentar"=="PRACIANO",][2]<-"FRANCISCO PRACIANO"
-    listaCandidatos[listaCandidatos$"Nome Parlamentar"=="IRACEMA PORTELA",][2]<-"IRACEMA PORTELLA"
-    
+    if(legislatura==52){
+        listaCandidatos[listaCandidatos$"Nome Parlamentar"=="DR. ADEMIR CAMILO",][2]<-"ADEMIR CAMILO"
+        listaCandidatos[listaCandidatos$"Nome Parlamentar"=="PASTOR JORGE",][2]<-"JORGE PINHEIRO"
+        listaCandidatos[listaCandidatos$"Nome Parlamentar"=="LUCI",][2]<-"LUCI CHOINACKI"
+        listaCandidatos[listaCandidatos$"Nome Parlamentar"=="BISPO WANDERVAL DE JESUS",][2]<-"WANDERVAL SANTOS"
+        
+        
+        
+    }else
+    if(legislatura==53){
+        listaCandidatos[listaCandidatos$"Nome Parlamentar"=="JURANDYR LOUREIRO",][2]<-"JURANDY LOUREIRO"
+        
+    }else if(legislatura==54){
+        listaCandidatos[listaCandidatos$"Nome Parlamentar"=="GAROTINHO",][2]<-"ANTHONY GAROTINHO"
+        listaCandidatos[listaCandidatos$"Nome Parlamentar"=="ONOFRE AGOSTINI",][2]<-"ONOFRE SANTO AGOSTINI"
+        listaCandidatos[listaCandidatos$"Nome Parlamentar"=="EVANDRO MILHOMEM",][2]<-"EVANDRO MILHOMEN"
+        listaCandidatos[listaCandidatos$"Nome Parlamentar"=="PRACIANO",][2]<-"FRANCISCO PRACIANO"
+        listaCandidatos[listaCandidatos$"Nome Parlamentar"=="IRACEMA PORTELA",][2]<-"IRACEMA PORTELLA"
+   
+    }
     
 },
 error=function(cond) {
@@ -282,9 +294,7 @@ finally={
     setkeyv(dt2, 'Nome')
     dt2 <- dt2[order(Nome),] 
     
-    write.csv(dt1, paste("data",legislatura,".csv",sep = ''), row.names=FALSE)
-    
-    
+   
     listaParcialDeputados<-merge(x = dt1, y = dt2, by = "Nome", all.x=TRUE)
     
     listaParcialDeputados$'Nome Parlamentar.y'<-NULL
@@ -449,14 +459,12 @@ calcularIndiceComplexidade<- function(Discurso){
 }
 
 
-obterListaDeDiscursos <- function( legislatura, ano ) {
+obterListaDeDiscursos <- function( legislatura) {
     
-    require(data.table)
- 
-    legislaturas<- obterLegislaturas()
-    listaFinalCompletadiscursos<-NULL
+    legislatura<-52
     
-    for(legislatura in legislaturas){
+      require(data.table)
+     listaFinalCompletadiscursos<-NULL
     
         anosLegislatura<-  obterPeriodoLegislaturas(legislatura)  
         
@@ -511,53 +519,18 @@ obterListaDeDiscursos <- function( legislatura, ano ) {
         
         }
     
-    
-    }
-    
-    
-    
-    
-    
-    
-        
-    listaFinalCompletadiscursos<-listaFinalCompletadiscursos[!is.na(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO),]
+    lista<-listaFinalCompletadiscursos[is.na(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO),]
     
     
     
     tab<-as.data.frame(table(lista$Nome_Orador))
     
-    require(ggplot2)
-   
-    hist(x =as.numeric(as.character(listaCompletadiscursos$text.type.ratio)) )
-    hist(x =as.numeric(as.character(listaCompletadiscursos$hapax.percentage)) )
+    
+      
+    write.csv(listaFinalCompletadiscursos, paste("app/dados/processados/dadosProcessadosDiscursos_",legislatura,".csv",sep = ''), row.names=FALSE)
     
     
-    cor (x = as.numeric(as.character(listaCompletadiscursos$text.type.ratio)), y=as.numeric(as.character(listaCompletadiscursos$text.sum)) ) 
-    
-    cor (x = as.numeric(as.character(listaCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaCompletadiscursos$text.sum)) ) 
-    
-        
-    
-    cor (x = as.numeric(as.character(listaFinalCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaFinalCompletadiscursos$text.type.ratio)) ) 
-    
-    
-    qplot(y = as.numeric(as.character(listaFinalCompletadiscursos$hapax.percentage)), x=as.numeric(as.character(listaFinalCompletadiscursos$idade)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
-    qplot(y = as.numeric(as.character(listaCompletadiscursos$text.type.ratio)), x=as.numeric(as.character(listaCompletadiscursos$idade)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
-
-    cor (x = as.numeric(as.character(listaFinalCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaFinalCompletadiscursos$idade)) ) 
-    cor (x = as.numeric(as.character(listaFinalCompletadiscursos$text.type.ratio)), y=as.numeric(as.character(listaFinalCompletadiscursos$idade)) ) 
-    
-    
-    qplot(y = as.numeric(as.character(listaFinalCompletadiscursos$hapax.percentage)), x=as.numeric(as.character(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
-    qplot(y = as.numeric(as.character(listaFinalCompletadiscursos$text.type.ratio)), x=as.numeric(as.character(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO)) ) + geom_point(shape=1) +geom_smooth(method = "lm", se = TRUE)
-    
-    
-    
-    cor (x = as.numeric(as.character(listaFinalCompletadiscursos$text.type.ratio)), y=as.numeric(as.character(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO)) ) 
-    cor (x = as.numeric(as.character(listaFinalCompletadiscursos$hapax.percentage)), y=as.numeric(as.character(listaFinalCompletadiscursos$COD_GRAU_INSTRUCAO)) ) 
-    
-    
-    return(listaCompletadiscursos)
+  
     
 }
 
